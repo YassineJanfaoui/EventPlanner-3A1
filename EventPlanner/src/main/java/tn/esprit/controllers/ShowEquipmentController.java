@@ -47,26 +47,19 @@ public class ShowEquipmentController {
 
     @FXML
     void initialize() {
-        // Set up the EquipmentService to get data
         EquipmentServices equipmentServices = new EquipmentServices();
         try {
-            // Retrieve the equipment list from the service
             ObservableList<Equipment> observableList = FXCollections.observableList(equipmentServices.returnList());
 
-            // Set the data into the TableView
             equipmentTable.setItems(observableList);
-
-            // Set the value factories for the columns
             colName.setCellValueFactory(new PropertyValueFactory<>("name"));
             colState.setCellValueFactory(new PropertyValueFactory<>("state"));
             colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
             colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             colEquipmentId.setCellValueFactory(new PropertyValueFactory<>("EquipmentId"));
 
-            // Hide the EquipmentId column
-            colEquipmentId.setVisible(false);  // This will hide the column from view
+            colEquipmentId.setVisible(false);
 
-            // Set up the Update and Delete buttons
             setUpButtons();
 
         } catch (SQLException e) {
@@ -75,12 +68,9 @@ public class ShowEquipmentController {
         }
     }
 
-    // Setting up the buttons for update and delete actions
     private void setUpButtons() {
-        // Update Button
         colUpdate.setCellFactory(param -> new TableCell<Equipment, Void>() {
             private final Button updateButton = new Button("Update");
-
             {
                 updateButton.setOnAction(event -> {
                     Equipment equipment = getTableView().getItems().get(getIndex());
@@ -107,7 +97,7 @@ public class ShowEquipmentController {
             {
                 deleteButton.setOnAction(event -> {
                     Equipment equipment = getTableView().getItems().get(getIndex());
-                    handleDeleteButtonClick(equipment);  // Handle delete action
+                    handleDeleteButtonClick(equipment);
                 });
             }
 
@@ -123,17 +113,13 @@ public class ShowEquipmentController {
         });
     }
 
-    // Handle the Delete button click
     private void handleDeleteButtonClick(Equipment equipment) {
         System.out.println("Delete equipment: " + equipment);
-        // Logic for deleting the equipment
         EquipmentServices equipmentServices = new EquipmentServices();
         equipmentServices.delete(equipment);
-        // Refresh the table after deletion
         refreshTable();
     }
 
-    // Refresh the table after deletion or update
     private void refreshTable() {
         EquipmentServices equipmentServices = new EquipmentServices();
         try {
@@ -151,14 +137,13 @@ public class ShowEquipmentController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddEquipment.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage from the button (if applicable)
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Add Equipment");
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace(); // Handle exception if the FXML loading fails
+            e.printStackTrace();
         }
     }
 
@@ -167,16 +152,14 @@ public class ShowEquipmentController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UpdateEquipment.fxml"));
             Parent root = loader.load();
 
-            // Pass the equipment data to the update scene
             UpdateEquipmentController controller = loader.getController();
             controller.setEquipmentData(equipment);
 
-            // Set the scene and title for the Update Equipment window
             stage.setScene(new Scene(root));
             stage.setTitle("Update Equipment");
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

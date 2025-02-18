@@ -1,6 +1,6 @@
 package tn.esprit.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Bill {
     private int BillId,Amount,Archived,EventID;

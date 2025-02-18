@@ -49,7 +49,7 @@ public class BillServices implements IService<Bill> {
             b.setBillId(rs.getInt("billid"));
             b.setAmount(rs.getInt("amount"));
             b.setArchived(rs.getInt("archived"));
-            b.setEventID(rs.getInt("eventid"));
+            b.setEventID(rs.getInt("eventId"));
             b.setDueDate(rs.getDate("duedate"));
             b.setDescription(rs.getString("description"));
             b.setPaymentStatus(rs.getString("paymentstatus"));
@@ -58,6 +58,7 @@ public class BillServices implements IService<Bill> {
         }
         return billList;
     }
+
 
     @Override
     public void delete(Bill b) {
@@ -98,5 +99,15 @@ public class BillServices implements IService<Bill> {
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
+    }
+    public int[] eventIDs() throws SQLException {
+        String query = "SELECT eventID FROM event";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<Integer> eventIDsList = new ArrayList<>();
+        while (rs.next()) {
+            eventIDsList.add(rs.getInt("eventID"));
+        }
+        return eventIDsList.stream().mapToInt(i -> i).toArray();
     }
 }

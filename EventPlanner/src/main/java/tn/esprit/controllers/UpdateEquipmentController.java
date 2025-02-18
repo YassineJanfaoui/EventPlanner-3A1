@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class UpdateEquipmentController {
 
-    private int equipmentId; // Track the equipment ID for updating
+    private int equipmentId;
 
     @FXML
     private TextField nameField;
@@ -37,7 +37,6 @@ public class UpdateEquipmentController {
 
     private final EquipmentServices equipmentServices = new EquipmentServices();
 
-    // Method to receive equipment data from the list scene
     public void setEquipmentData(Equipment equipment) {
         this.equipmentId = equipment.getEquipmentId();
         nameField.setText(equipment.getName());
