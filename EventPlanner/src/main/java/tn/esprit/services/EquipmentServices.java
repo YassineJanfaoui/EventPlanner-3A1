@@ -19,7 +19,8 @@ public class EquipmentServices implements IService<Equipment> {
 
     @Override
     public void addP(Equipment e) throws SQLException {
-        String query="INSERT INTO equipment ('name','state','category','quantity') VALUES (?,?,?,?)";
+        String query = "INSERT INTO equipment (name, state, category, quantity) VALUES (?,?,?,?)";
+
         PreparedStatement pst=con.prepareStatement(query);
         pst.setString(1, e.getName());
         pst.setString(2, e.getState());
@@ -51,7 +52,7 @@ public class EquipmentServices implements IService<Equipment> {
 
     @Override
     public void delete(Equipment e){
-        String query = "DELETE FROM equipment WHERE id=?";
+        String query = "DELETE FROM equipment WHERE equipmentid=?";
         try {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, e.getEquipmentId());
@@ -68,7 +69,7 @@ public class EquipmentServices implements IService<Equipment> {
 
     @Override
     public void update(Equipment e){
-        String query = "UPDATE equipment SET name=?, state=?, category=?, quantity=? WHERE id=?";
+        String query = "UPDATE equipment SET name=?, state=?, category=?, quantity=? WHERE equipmentid=?";
         try {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, e.getName());
