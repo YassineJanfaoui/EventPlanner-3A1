@@ -4,6 +4,17 @@ public class Equipment {
     private int EquipmentId, quantity;
     private String name, category,state;
 
+    public Equipment(int equipmentId, int quantity, String name, String category, String state) {
+        EquipmentId = equipmentId;
+        this.quantity = quantity;
+        this.name = name;
+        this.category = category;
+        this.state = state;
+    }
+
+    public Equipment() {
+    }
+
     public int getEquipmentId() {
         return EquipmentId;
     }

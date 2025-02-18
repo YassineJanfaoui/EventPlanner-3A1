@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ShowEquipmentController">
+
+   <VBox layoutX="143.0" layoutY="110.0" prefHeight="384.0" prefWidth="620.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-color: #053536;">
+      <effect>
+         <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
+      </effect>
+      <children>
+         <TableView fx:id="equipmentTable" prefHeight="300.0" prefWidth="800.0">
+            <columns>
+               <TableColumn fx:id="colEquipmentId" text="Equipment ID" />
+               <TableColumn fx:id="colName" prefWidth="100.0" text="Name">
+                  <minWidth>80.0</minWidth>
+               </TableColumn>
+               <TableColumn fx:id="colState" prefWidth="133.0" text="State">
+                  <minWidth>120</minWidth>
+               </TableColumn>
+               <TableColumn fx:id="colCategory" prefWidth="126.0" text="Category">
+                  <minWidth>114.0</minWidth>
+               </TableColumn>
+               <TableColumn fx:id="colQuantity" prefWidth="77.0" text="Quantity">
+                  <minWidth>47.0</minWidth>
+               </TableColumn>
+               <TableColumn fx:id="colUpdate" prefWidth="62.0" text="Update">
+                  <minWidth>44.0</minWidth>
+               </TableColumn>
+               <TableColumn fx:id="colDelete" prefWidth="68.0" text="Delete">
+                  <minWidth>30</minWidth>
+               </TableColumn>
+            </columns>
+         </TableView>
+
+         <Button fx:id="addButton" onAction="#navigateToAddEquipment" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add Equipment" />
+      </children>
+   </VBox>
+      <AnchorPane>
+         <fx:include source="Sidebar.fxml" />
+      </AnchorPane>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ShowEquipmentController">
-   <children>
-      <Button layoutX="242.0" layoutY="188.0" mnemonicParsing="false" text="Button" />
-   </children>
+
+
+   <Label layoutX="294.0" layoutY="31.0" styleClass="title" text="List Equipment">
+      <font>
+         <Font name="System Bold Italic" size="30.0" />
+      </font>
+   </Label>
 </AnchorPane>

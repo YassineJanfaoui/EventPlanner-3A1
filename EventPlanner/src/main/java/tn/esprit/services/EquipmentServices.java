@@ -41,6 +41,7 @@ public class EquipmentServices implements IService<Equipment> {
         List<Equipment> equipmentList=new ArrayList<>();
         while(rs.next()){
             Equipment e=new Equipment();
+            e.setEquipmentId(rs.getInt("Equipmentid"));
             e.setName(rs.getString("name"));
             e.setState(rs.getString("state"));
             e.setCategory(rs.getString("category"));
