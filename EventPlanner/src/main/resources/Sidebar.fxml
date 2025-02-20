@@ -53,7 +53,7 @@
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="Bills" styleClass="my-button2" text="Bills">
+            <Button fx:id="Bills" styleClass="my-button2" text="Bills" onAction="#navigateToBills">
                 <graphic>
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>

@@ -108,6 +108,22 @@ public class SidebarController {
             e.printStackTrace(); // Handle exception if the FXML loading fails
         }
     }
+    @FXML
+    public void navigateToBills(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShowBill.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from the button (if applicable)
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Show Bills");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if the FXML loading fails
+        }
+    }
 
     @FXML
     void NavigateToEditProfile(ActionEvent event) {

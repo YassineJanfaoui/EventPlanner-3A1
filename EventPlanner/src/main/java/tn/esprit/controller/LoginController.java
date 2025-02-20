@@ -75,7 +75,7 @@ public class LoginController {
     private void navigateToHome() {
         try {
             // Load the home.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/event3.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShowEquipment.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (window)
