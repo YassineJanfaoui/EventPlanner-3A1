@@ -42,7 +42,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Workshop" styleClass="my-button2" text="Workshop">
+            <Button fx:id="Workshop" styleClass="my-button2" onAction="#navigateToWorkshop" text="Workshop">
                 <graphic>
                     <FontAwesomeIcon size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
@@ -77,7 +77,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Partners" styleClass="my-button2" text="Partners">
+            <Button fx:id="Partners" styleClass="my-button2" onAction="#navigateToPartner" text="Partners">
                 <graphic>
                     <FontAwesomeIcon glyphName="HANDSHAKE" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
