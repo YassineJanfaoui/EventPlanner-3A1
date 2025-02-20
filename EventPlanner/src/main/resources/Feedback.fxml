@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="714.0" prefWidth="818.0" style="-fx-background-color: #f0f2f5;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controller.AddFeedback">
+
+   <!-- Left Sidebar -->
+   <left>
+      <fx:include source="Sidebar.fxml" />
+   </left>
+
+   <stylesheets>
+      <URL value="@styles/addproject.css" />
+   </stylesheets>
+
+   <!-- Center: Feedback Management Form -->
+   <center>
+      <VBox alignment="CENTER" spacing="30" BorderPane.alignment="CENTER" style="-fx-padding: 40;">
+         <!-- Title -->
+         <Label styleClass="header-label" text="Feedback Management">
+            <font>
+               <Font size="36.0" />
+            </font>
+         </Label>
+
+         <VBox alignment="CENTER" spacing="20">
+            <!-- Feedback ID (for Update/Delete) - Keep as TextField or ComboBox -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Feedback ID (for Update/Delete):" />
+               <TextField fx:id="feedbackIdField" prefWidth="400"
+                          promptText="Enter feedback ID for update/delete operations"
+                          styleClass="text-field" />
+            </VBox>
+
+            <!-- Comment -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Comment:" />
+               <TextArea fx:id="commentArea" prefHeight="100" prefWidth="400"
+                         promptText="Enter your feedback comment..."
+                         styleClass="text-field" wrapText="true" />
+            </VBox>
+
+            <!-- Rate Selection (1-10) -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Rate (1-10):" />
+               <TextField fx:id="rateField" prefWidth="400" styleClass="combo-box" />
+            </VBox>
+
+            <!-- Dropdowns for Foreign Keys -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Team ID:" />
+               <ComboBox fx:id="teamIdComboBox" prefWidth="400" styleClass="combo-box" />
+            </VBox>
+
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Event ID:" />
+               <ComboBox fx:id="eventIdComboBox" prefWidth="400" styleClass="combo-box" />
+            </VBox>
+
+            <!-- Action Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+               <Button fx:id="submitButton" onAction="#handleSubmit"
+                       styleClass="submit-button" text="Add Feedback" />
+               <Button fx:id="updateButton" onAction="#handleUpdate"
+                       styleClass="update-button" text="Update Feedback" />
+               <Button fx:id="deleteButton" onAction="#handleDelete"
+                       styleClass="delete-button" text="Delete Feedback" />
+               <Button fx:id="displayAllButton" onAction="#handleDisplayAll"
+                       styleClass="update-button" text="Display All Feedbacks" />
+            </HBox>
+         </VBox>
+      </VBox>
+   </center>
+</BorderPane>

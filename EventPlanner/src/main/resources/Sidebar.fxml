@@ -30,13 +30,13 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Team" styleClass="my-button2" text="Team">
+            <Button fx:id="Team" styleClass="my-button2" text="Team" onAction="#navigateToTeam">
                 <graphic>
                     <FontAwesomeIcon glyphName="USERS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button fx:id="Feedback" styleClass="my-button2" text="Feedback">
+            <Button fx:id="Feedback" styleClass="my-button2" text="Feedback" onAction="#navigateToFeedback">
                 <graphic>
                     <FontAwesomeIcon glyphName="COMMENTS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
@@ -65,13 +65,13 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Submission" styleClass="my-button2" text="Submission">
+            <Button fx:id="Submission" styleClass="my-button2" text="Submission" onAction="#navigateToSubmission">
                 <graphic>
                     <FontAwesomeIcon glyphName="FILE_UPLOAD" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button fx:id="Location" onAction="#navigateToVenue" styleClass="my-button2" text="Location">
+            <Button fx:id="Location" onAction="#navigateToVenue" styleClass="my-button2" text="Venue">
                 <graphic>
                     <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
