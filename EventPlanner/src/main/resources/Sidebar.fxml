@@ -14,7 +14,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.esprit.controllers.SidebarController"
+            fx:controller="tn.esprit.controller.SidebarController"
             prefHeight="400.0" prefWidth="140.0"
             stylesheets="@styles/button.css">
     <AnchorPane prefWidth="140">

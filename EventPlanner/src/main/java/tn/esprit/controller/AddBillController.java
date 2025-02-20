@@ -1,4 +1,4 @@
-package tn.esprit.controllers;
+package tn.esprit.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.time.format.DateTimeParseException;
 
 public class AddBillController {
 
