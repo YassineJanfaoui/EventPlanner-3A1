@@ -10,7 +10,7 @@ public class MyDatabase {
     private static MyDatabase instance;
 
     // Database connection dsetails
-    private final String URL = "jdbc:mysql://localhost:3306/event_planner";
+    private final String URL = "jdbc:mysql://localhost:3306/pidev";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
 
