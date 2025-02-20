@@ -1,17 +1,17 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Bill;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BillServices implements IService<Bill> {
+public class BillServices implements iService<Bill> {
     private Connection con;
 
     public BillServices() {
-        con = MyDatabase.getInstance().getConnection();
+        con = MyDataBase.getInstance().getConnection();
     }
 
     @Override

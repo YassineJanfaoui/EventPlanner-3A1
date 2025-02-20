@@ -39,27 +39,7 @@ public class UserService implements iService<User> {
             System.out.println("User created with ID: " + userId);
 
             // Insert into the respective role-specific table
-            if (u.getRole().toString().equals("ADMIN")) { // Use enum comparison
-                String adminQuery = "INSERT INTO admin(userId) VALUES (?)";
-                PreparedStatement psAdmin = con.prepareStatement(adminQuery);
-                psAdmin.setInt(1, userId);
-                psAdmin.executeUpdate();
-            } else if (u.getRole().toString().equals("TEAM_LEADER")) { // Use enum comparison
-                String teamLeaderQuery = "INSERT INTO teamleader(userId) VALUES (?)";
-                PreparedStatement psTeamLeader = con.prepareStatement(teamLeaderQuery);
-                psTeamLeader.setInt(1, userId);
-                psTeamLeader.executeUpdate();
-            } else if (u.getRole().toString().equals("EVENT_PLANNER")) { // Use enum comparison
-                String eventPlannerQuery = "INSERT INTO eventplanner(userId) VALUES (?)";
-                PreparedStatement psEventPlanner = con.prepareStatement(eventPlannerQuery);
-                psEventPlanner.setInt(1, userId);
-                psEventPlanner.executeUpdate();
-            } else if (u.getRole().toString().equals("SIMPLE_USER")) { // Use enum comparison
-                String simpleUserQuery = "INSERT INTO simpleuser(userId) VALUES (?)";
-                PreparedStatement psSimpleUser = con.prepareStatement(simpleUserQuery);
-                psSimpleUser.setInt(1, userId);
-                psSimpleUser.executeUpdate();
-            }
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
