@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.controller.SidebarController"
+            prefHeight="400.0" prefWidth="140.0"
+            stylesheets="@styles/button.css">
+    <AnchorPane prefWidth="140">
+        <VBox styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" >
+            <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/logo.png" />
+                </image>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <viewport>
+                    <Rectangle2D />
+                </viewport>
+            </ImageView>
+            <Button styleClass="my-button2" text="Home">
+                <graphic>
+                    <FontAwesomeIcon glyphName="HOME" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Team" onAction="#navigateToTeam">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USERS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Workshop">
+                <graphic>
+                    <FontAwesomeIcon size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Equipment" >
+                <graphic>
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+            <Button styleClass="my-button2" text="Bills">
+                <graphic>
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Event">
+                <graphic>
+                    <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Participant">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Feedback" onAction="#navigateToFeedback">
+                <graphic>
+                    <FontAwesomeIcon glyphName="COMMENTS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Submission" onAction="#navigateToSubmission">
+                <graphic>
+                    <FontAwesomeIcon glyphName="FILE_UPLOAD" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Location">
+                <graphic>
+                    <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Partners">
+                <graphic>
+                    <FontAwesomeIcon glyphName="HANDSHAKE" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Catering">
+                <graphic>
+                    <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+        </VBox>
+    </AnchorPane>
+</AnchorPane>

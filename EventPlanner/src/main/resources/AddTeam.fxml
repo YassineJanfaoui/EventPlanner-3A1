@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.ComboBox?>
+<BorderPane prefHeight="676.0" prefWidth="828.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.AddTeam">
+
+   <!-- Left Sidebar: include your sidebar.fxml -->
+   <left>
+      <fx:include source="Sidebar.fxml" />
+   </left>
+
+   <stylesheets>
+      <URL value="@styles/style.css" />
+   </stylesheets>
+
+   <!-- Center: Team Management Form -->
+   <center>
+      <VBox alignment="CENTER" spacing="30" BorderPane.alignment="CENTER" style="-fx-padding: 40;">
+         <!-- Centered Title -->
+         <VBox alignment="CENTER" spacing="20">
+            <Label styleClass="header-label" text="Team Management">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </VBox>
+
+         <VBox alignment="CENTER" spacing="20">
+            <!-- Team ID for Update/Delete -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Team ID (for Update/Delete):" />
+               <TextField fx:id="teamIdField" prefWidth="400" promptText="Enter team ID for update/delete operations" styleClass="text-field" />
+            </VBox>
+            <!-- Team Name -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Team Name:" />
+               <TextField fx:id="teamNameField" prefWidth="400" promptText="Enter team name" styleClass="text-field" />
+            </VBox>
+            <!-- Event ID -->
+            <VBox spacing="10">
+               <Label styleClass="input-label" text="Event ID:" />
+               <ComboBox fx:id="eventIdComboBox" prefWidth="400" styleClass="combo-box" />
+            </VBox>
+
+            <!-- Buttons for CRUD Operations -->
+            <HBox alignment="CENTER" spacing="20">
+               <Button fx:id="createTeamButton" onAction="#createTeam" styleClass="submit-button" text="Create Team" />
+               <Button fx:id="updateTeamButton" onAction="#updateTeam" styleClass="update-button" text="Update Team" />
+               <Button fx:id="deleteTeamButton" onAction="#deleteTeam" styleClass="delete-button" text="Delete Team" />
+               <Button fx:id="displayAllButton" onAction="#handleDisplayAll" styleClass="update-button" text="Display All Teams" />
+            </HBox>
+         </VBox>
+      </VBox>
+   </center>
+</BorderPane>
