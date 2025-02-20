@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ShowWorkshopController">
+
+    <VBox layoutX="143.0" layoutY="110.0" prefHeight="512.0" prefWidth="700.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-color: #053536;">
+        <effect>
+            <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
+        </effect>
+        <children>
+            <TableView fx:id="workshopTable" prefHeight="416.0" prefWidth="668.0">
+                <columns>
+                    <TableColumn fx:id="colWorkshopID" prefWidth="37.0" text="ID" />
+                    <TableColumn fx:id="colTitle" prefWidth="70.0" text="Title" />
+                    <TableColumn fx:id="colCoach" prefWidth="74.0" text="Coach" />
+                    <TableColumn fx:id="colDuration" prefWidth="87.0" text="Duration" />
+                    <TableColumn fx:id="colStartDate" prefWidth="81.0" text="Start Date" />
+                    <TableColumn fx:id="colDescription" prefWidth="92.0" text="Description" />
+                    <TableColumn fx:id="colPartnerID" prefWidth="69.0" text="IDPartner" />
+                    <TableColumn fx:id="colUpdate" minWidth="0.0" prefWidth="59.0" text="Update" />
+                    <TableColumn fx:id="colDelete" prefWidth="77.0" text="Delete" />
+                </columns>
+            </TableView>
+            <Button fx:id="addButton" onAction="#navigateToAddWorkshop" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add Workshop" />
+        </children>
+    </VBox>
+    <AnchorPane>
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+    <Label layoutX="294.0" layoutY="31.0" styleClass="title" text="List Workshops">
+        <font>
+            <Font name="System Bold Italic" size="30.0" />
+        </font>
+    </Label>
+</AnchorPane>
