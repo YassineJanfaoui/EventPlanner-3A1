@@ -14,7 +14,7 @@
 
 <BorderPane prefHeight="776.0" prefWidth="1285.0" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.controllers.Addfront"
+            fx:controller="tn.esprit.controllers.Addfront"
             stylesheets="@styles/button.css">
 
     <top>
