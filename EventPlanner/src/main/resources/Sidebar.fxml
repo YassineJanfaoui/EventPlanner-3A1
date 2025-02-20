@@ -53,7 +53,7 @@
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="Bills" styleClass="my-button2" text="Bills" onAction="#navigateToBills">
+            <Button fx:id="Bills" onAction="#navigateToBills" styleClass="my-button2" text="Bills">
                 <graphic>
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
@@ -71,7 +71,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Location" styleClass="my-button2" text="Location">
+            <Button fx:id="Location" onAction="#navigateToVenue" styleClass="my-button2" text="Location">
                 <graphic>
                     <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
@@ -83,7 +83,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Catering" styleClass="my-button2" text="Catering">
+            <Button fx:id="Catering" onAction="#navigateToCatering" styleClass="my-button2" text="Catering">
                 <graphic>
                     <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
