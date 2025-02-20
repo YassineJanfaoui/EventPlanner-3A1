@@ -11,6 +11,6 @@
 
 <AnchorPane prefHeight="676.0" prefWidth="1088.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" >
     <AnchorPane>
-        <fx:include source="Sidebar (1).fxml" />
+        <fx:include source="Sidebar.fxml" />
     </AnchorPane>
 </AnchorPane>

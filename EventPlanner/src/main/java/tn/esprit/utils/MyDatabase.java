@@ -1,14 +1,13 @@
 package tn.esprit.utils;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MyDataBase {
+public class MyDatabase {
 
     private Connection connection;
-    private static MyDataBase instance;
+    private static MyDatabase instance;
 
     // Database connection dsetails
     private final String URL = "jdbc:mysql://localhost:3306/pidev";
@@ -19,7 +18,7 @@ public class MyDataBase {
      * Private constructor to prevent instantiation from outside the class.
      * Initializes the database connection.
      */
-    private MyDataBase() {
+    private MyDatabase() {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Connected to the database");
@@ -27,11 +26,11 @@ public class MyDataBase {
             System.out.println("Error while connecting to the database: " + e.getMessage());
         }
     }
-    public static MyDataBase getInstance() {
+    public static MyDatabase getInstance() {
         if (instance == null) {
-            synchronized (MyDataBase.class) { // Ensure thread safety in multi-threaded environments
+            synchronized (MyDatabase.class) { // Ensure thread safety in multi-threaded environments
                 if (instance == null) {
-                    instance = new MyDataBase();
+                    instance = new MyDatabase();
                 }
             }
         }

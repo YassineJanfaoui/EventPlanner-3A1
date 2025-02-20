@@ -1,23 +1,26 @@
-package tn.esprit.controllers;
+package tn.esprit.controller;
 
-import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import tn.esprit.entities.Role;
+import tn.esprit.entities.Status;
+import tn.esprit.entities.User;
 import tn.esprit.services.UserService;
-import tn.esprit.entities.*;
 
 import java.io.IOException;
 
-public class SignUpController {
+public class AddAdminController {
+
+    @FXML
+    private Button AddAdmin;
 
     @FXML
     private PasswordField ConPwd;
@@ -36,20 +39,7 @@ public class SignUpController {
 
     @FXML
     private PasswordField pwd;
-
-    @FXML
-    private ChoiceBox<String> roleChoiceBox;
-
-    @FXML
-    private Button signUpButton;
-
     private UserService userService = new UserService();
-
-    @FXML
-    public void initialize() {
-        // Populate the ChoiceBox with roles
-        roleChoiceBox.setItems(FXCollections.observableArrayList("TEAM_LEADER", "EVENT_PLANNER", "SIMPLE_USER"));
-    }
 
     @FXML
     void Submit(ActionEvent event) {
@@ -60,44 +50,44 @@ public class SignUpController {
         String email = Email.getText();
         String name = fullname.getText();
         String phoneNumber = PhonrNumber.getText();
-        String role = roleChoiceBox.getValue();
+
 
         // Validate input fields
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty() || name.isEmpty() || phoneNumber.isEmpty() || role == null) {
-            showAlert("Error", "All fields are required.");
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty() || name.isEmpty() || phoneNumber.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR,"Error", "All fields are required.");
             return;
         }
 
         if (!isValidEmail(email)) {
-            showAlert("Error", "Invalid email format.");
+            showAlert(Alert.AlertType.ERROR,"Error", "Invalid email format.");
             return;
         }
 
         if (!isValidPhoneNumber(phoneNumber)) {
-            showAlert("Error", "Invalid phone number format.");
+            showAlert(Alert.AlertType.ERROR,"Error", "Invalid phone number format.");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            showAlert("Error", "Passwords do not match.");
+            showAlert(Alert.AlertType.ERROR,"Error", "Passwords do not match.");
             return;
         }
 
         if (!isStrongPassword(password)) {
-            showAlert("Error", "Password must be at least 8 characters long and include a mix of letters, numbers, and special characters.");
+            showAlert(Alert.AlertType.ERROR,"Error", "Password must be at least 8 characters long and include a mix of letters, numbers, and special characters.");
             return;
         }
 
         // Create a new User object
-        User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.valueOf(role));
+        User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.ADMIN);
 
         // Use UserService to create the user
-        userService.create(newUser);
+        userService.addP(newUser);
 
         // Show success message
-        showAlert("Success", "User created successfully.");
+        showAlert("Success", "Admin created successfully.");
+        NavigateToAddAdmin();
 
-        navigateToLogin();
     }
 
     private boolean isValidEmail(String email) {
@@ -133,16 +123,23 @@ public class SignUpController {
         Email.clear();
         fullname.clear();
         PhonrNumber.clear();
-        roleChoiceBox.getSelectionModel().clearSelection();
     }
-    private void navigateToLogin() {
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    void NavigateToAddAdmin() {
         try {
             // Load the home.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/BackAdmin.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (window)
-            Stage stage = (Stage) signUpButton.getScene().getWindow();
+            Stage stage = (Stage) AddAdmin.getScene().getWindow();
 
             // Set the new scene with the home.fxml content
             Scene scene = new Scene(root);
@@ -153,11 +150,5 @@ public class SignUpController {
             showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load the home screen.");
         }
     }
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }

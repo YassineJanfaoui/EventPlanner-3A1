@@ -60,7 +60,7 @@
         </HBox>
     </VBox>
     <AnchorPane prefHeight="678.0" prefWidth="140.0">
-        <fx:include source="Sidebar (1).fxml" />
+        <fx:include source="Sidebar.fxml" />
     </AnchorPane>
 
 </AnchorPane>

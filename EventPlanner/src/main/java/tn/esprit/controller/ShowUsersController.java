@@ -1,4 +1,4 @@
-package tn.esprit.controllers;
+package tn.esprit.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import tn.esprit.entities.LoggedInUser;
 import tn.esprit.entities.*;
 import tn.esprit.services.UserService;
 

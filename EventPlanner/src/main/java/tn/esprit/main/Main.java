@@ -1,6 +1,6 @@
 package tn.esprit.main;
 
-import tn.esprit.utils.MyDataBase;
+import tn.esprit.utils.MyDatabase;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import tn.esprit.services.*;
 
 public class Main {
     public static void main(String[] args) {
-        MyDataBase db =MyDataBase.getInstance();
+        MyDatabase db = MyDatabase.getInstance();
         UserService userService=new UserService();
         /*User admin = new Admin(
                 "adminUser",

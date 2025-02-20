@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="644.0" prefWidth="486.0" style="-fx-background-color: #7C81AB;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1 " fx:controller="tn.esprit.controllers.SignUpController">
+<AnchorPane prefHeight="644.0" prefWidth="486.0" style="-fx-background-color: #7C81AB;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1 " fx:controller="tn.esprit.controller.SignUpController">
    <children>
       <VBox alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="597.0" prefWidth="443.0" spacing="20" style="-fx-background-color: #F2F2F5; -fx-padding: 30px; -fx-min-width: 400px; -fx-min-height: 500px;">
          <children>
