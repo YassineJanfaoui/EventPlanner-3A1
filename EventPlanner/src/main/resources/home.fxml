@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.HomeController">
+   <children>
+      <ButtonBar layoutX="172.0" layoutY="224.0" prefHeight="40.0" prefWidth="342.0">
+         <buttons>
+          <Button fx:id="EditProfileHome" mnemonicParsing="false" onAction="#EditClicked" text="edit profile" />
+          <Button fx:id="LogOutHome" mnemonicParsing="false" onAction="#Clicked" text="Log Out" />
+            <Button mnemonicParsing="false" text="Button" />
+         </buttons>
+      </ButtonBar>
+      <TextField fx:id="FullNameHome" layoutX="23.0" layoutY="29.0" />
+      <TextField fx:id="RoleHome" layoutX="24.0" layoutY="65.0" />
+   </children>
+</AnchorPane>

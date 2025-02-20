@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="731.0" prefWidth="140.0" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.SidebarController">
+    <AnchorPane prefHeight="676.0" prefWidth="140">
+        <VBox prefHeight="731.0" prefWidth="140.0" styleClass="sidebar" AnchorPane.bottomAnchor="-55.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
+            <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/logo2.png" />
+                </image>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <viewport>
+                    <Rectangle2D />
+                </viewport>
+            </ImageView>
+
+            <Button fx:id="Event" styleClass="my-button2" text="Event">
+                <graphic>
+                    <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Team" styleClass="my-button2" text="Team">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USERS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Feedback" styleClass="my-button2" text="Feedback">
+                <graphic>
+                    <FontAwesomeIcon glyphName="COMMENTS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Workshop" styleClass="my-button2" text="Workshop">
+                <graphic>
+                    <FontAwesomeIcon size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Equipment" onAction="#navigateToEquipment" styleClass="my-button2" text="Equipment">
+                <graphic>
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+            <Button fx:id="Bills" styleClass="my-button2" text="Bills">
+                <graphic>
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Participant" styleClass="my-button2" text="Participant">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Submission" styleClass="my-button2" text="Submission">
+                <graphic>
+                    <FontAwesomeIcon glyphName="FILE_UPLOAD" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Location" styleClass="my-button2" text="Location">
+                <graphic>
+                    <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Partners" styleClass="my-button2" text="Partners">
+                <graphic>
+                    <FontAwesomeIcon glyphName="HANDSHAKE" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="Catering" styleClass="my-button2" text="Catering">
+                <graphic>
+                    <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+         <Button fx:id="EditProfile" onAction="#NavigateToEditProfile" styleClass="my-button2" text="Edit Profile">
+            <graphic>
+               <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
+            </graphic>
+         </Button>
+         <Button fx:id="LogOut" onAction="#NavigateToLogIn" styleClass="my-button2" text="Log Out">
+            <graphic>
+               <FontAwesomeIcon glyphName="SIGN_OUT" size="1.4em" styleClass="font-awesome-icon" />
+            </graphic>
+         </Button>
+        </VBox>
+    </AnchorPane>
+</AnchorPane>
