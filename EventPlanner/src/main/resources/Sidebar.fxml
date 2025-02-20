@@ -1,87 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="180.0" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.SidebarController">
-    <AnchorPane prefHeight="756.0" prefWidth="385.0" style="-fx-background-color: #2A2A72; -fx-padding: 10;">
-        <VBox alignment="CENTER" layoutX="-173.6" prefWidth="354.0" spacing="15" style="-fx-background-color: #2A2A72;" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
-            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.controller.SidebarController"
+            prefHeight="400.0" prefWidth="140.0"
+            stylesheets="@styles/button.css">
+    <AnchorPane prefWidth="140">
+        <VBox styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" >
+            <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/logo2.png" />
                 </image>
                 <VBox.margin>
-                    <Insets bottom="10" />
+                    <Insets />
                 </VBox.margin>
+                <viewport>
+                    <Rectangle2D />
+                </viewport>
             </ImageView>
-         <Button fx:id="Users" onAction="#NavigateToUser" styleClass="sidebar-button" text="Users">
-            <graphic>
-               <FontAwesomeIcon glyphName="USERS" size="1.4em" />
-            </graphic>
-         </Button>
-
-            <Button styleClass="sidebar-button" text="Team">
+            <Button styleClass="my-button2" text="Home">
                 <graphic>
-                    <FontAwesomeIcon glyphName="USERS" size="1.4em" />
+                    <FontAwesomeIcon glyphName="HOME" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Workshop">
+            <Button styleClass="my-button2" text="Team">
                 <graphic>
-                    <FontAwesomeIcon glyphName="BRIEFCASE" size="1.4em" />
+                    <FontAwesomeIcon glyphName="USERS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Bills">
+            <Button styleClass="my-button2" text="Workshop">
                 <graphic>
-                    <FontAwesomeIcon glyphName="FILE_INVOICE_DOLLAR" size="1.4em" />
+                    <FontAwesomeIcon size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button onAction="#navigateToEquipment" styleClass="sidebar-button" text="Equipment">
+            <Button styleClass="my-button2" text="Equipment" onAction="#navigateToEquipment">
                 <graphic>
-                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" />
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+            <Button styleClass="my-button2" text="Bills" onAction="#navigateToBill">
+                <graphic>
+                    <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Event">
+            <Button styleClass="my-button2" text="Event">
                 <graphic>
-                    <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" />
+                    <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Participant">
+            <Button styleClass="my-button2" text="Participant">
                 <graphic>
-                    <FontAwesomeIcon glyphName="USER" size="1.4em" />
+                    <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Feedback">
+            <Button styleClass="my-button2" text="Feedback">
                 <graphic>
-                    <FontAwesomeIcon glyphName="COMMENTS" size="1.4em" />
+                    <FontAwesomeIcon glyphName="COMMENTS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Location">
+            <Button styleClass="my-button2" text="Submission">
                 <graphic>
-                    <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" />
+                    <FontAwesomeIcon glyphName="FILE_UPLOAD" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Partners">
+            <Button styleClass="my-button2" text="Location">
                 <graphic>
-                    <FontAwesomeIcon glyphName="HANDSHAKE" size="1.4em" />
+                    <FontAwesomeIcon glyphName="MAP_MARKER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
 
-            <Button styleClass="sidebar-button" text="Catering">
+            <Button styleClass="my-button2" text="Partners">
                 <graphic>
-                    <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" />
+                    <FontAwesomeIcon glyphName="HANDSHAKE" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Catering">
+                <graphic>
+                    <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
         </VBox>
