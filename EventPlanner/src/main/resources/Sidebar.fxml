@@ -24,7 +24,7 @@
                 </viewport>
             </ImageView>
 
-            <Button fx:id="Event" styleClass="my-button2" text="Event">
+            <Button fx:id="Event" styleClass="my-button2" text="Event" onAction="#navigateToEvent">
                 <graphic>
                     <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
@@ -59,12 +59,16 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Participant" styleClass="my-button2" text="Participant">
+            <Button fx:id="Participant" styleClass="my-button2" text="Participant" onAction="#navigateToParticipant">
                 <graphic>
                     <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
-
+            <Button fx:id="Reservation" styleClass="my-button2" text="Reservation" onAction="#navigateToReservation">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
             <Button fx:id="Submission" styleClass="my-button2" text="Submission" onAction="#navigateToSubmission">
                 <graphic>
                     <FontAwesomeIcon glyphName="FILE_UPLOAD" size="1.4em" styleClass="font-awesome-icon" />

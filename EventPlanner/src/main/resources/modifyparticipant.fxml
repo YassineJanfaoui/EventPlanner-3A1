@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #7C81AB;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ModifyParticipant">
+
+    <!-- Conteneur du formulaire avec ombre -->
+    <VBox layoutX="278.0" layoutY="79.0" prefHeight="527.0" prefWidth="510.0" spacing="8.0" style="-fx-padding: 15px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #053536;">
+        <!-- Effet d'ombre -->
+        <effect>
+            <DropShadow color="#888888" offsetX="3.0" offsetY="3.0" radius="8.0" />
+        </effect>
+
+        <!-- Champ ID -->
+        <Label text="ID" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="participantIdField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Nom -->
+        <Label text="Nom" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Affiliation -->
+        <Label text="Affiliation" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="affiliationField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Âge -->
+        <Label text="Âge" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="ageField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ ID d'équipe -->
+        <Label text="ID d'équipe" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <ChoiceBox fx:id="teamIdField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Bouton de validation -->
+        <Button mnemonicParsing="false" onAction="#validate" prefHeight="32.0" prefWidth="192.0" styleClass="my-button" text="modify" />
+    </VBox>
+
+    <Label layoutX="303.0" layoutY="14.0" prefHeight="62.0" prefWidth="550.0" styleClass="title" text="Modify  Participant">
+        <font>
+            <Font name="System Bold Italic" size="36.0" />
+        </font>
+    </Label>
+
+    <!-- Ajout de la barre latérale (optionnelle) -->
+    <AnchorPane>
+        <VBox style="-fx-background-color: #7C81AB;" styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <!-- Ajout de boutons avec icônes FontAwesome -->
+            <Button styleClass="my-button2" text="Home">
+                <graphic>
+                    <FontAwesomeIcon glyphName="HOME" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Activities">
+                <graphic>
+                    <FontAwesomeIcon glyphName="ANCHOR" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Salles">
+                <graphic>
+                    <FontAwesomeIcon glyphName="TROPHY" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Equipement">
+                <graphic>
+                    <FontAwesomeIcon glyphName="BELL" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Evennement">
+                <graphic>
+                    <FontAwesomeIcon glyphName="CALENDAR_ALT" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button onAction="#goToAjouterEvents" styleClass="my-button2" text="Participant">
+                <graphic>
+                    <FontAwesomeIcon glyphName="FLAG_CHECKERED" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Preferences">
+                <graphic>
+                    <FontAwesomeIcon glyphName="COG" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Notifications">
+                <graphic>
+                    <FontAwesomeIcon glyphName="BELL" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Theme">
+                <graphic>
+                    <FontAwesomeIcon glyphName="PAINT_BRUSH" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+
+            <Button styleClass="my-button2" text="Language">
+                <graphic>
+                    <FontAwesomeIcon glyphName="GLOBE" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+        </VBox>
+    </AnchorPane>
+    <AnchorPane>
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+</AnchorPane>

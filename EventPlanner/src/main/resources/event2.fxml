@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #7C81AB;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ModifierEvent">
+
+    <!-- Conteneur du formulaire avec ombre -->
+    <VBox layoutX="228.0" layoutY="14.0" prefHeight="713.0" prefWidth="478.0" spacing="1.0" style="-fx-padding: 15px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #7C81AB;">
+
+        <!-- Effet d'ombre -->
+        <effect>
+            <DropShadow color="#888888" offsetX="3.0" offsetY="3.0" radius="8.0" />
+        </effect>
+
+        <!-- Champ ID -->
+        <Label text="ID" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="idField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Nom -->
+        <Label text="Name" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Date de début -->
+        <Label text="Start Date" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <DatePicker fx:id="startDateField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Date de fin -->
+        <Label text="End Date" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <DatePicker fx:id="endDateField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Nombre maximum de participants -->
+        <Label text="Maximuim Number Of Participants" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="maxParticipantsField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Description -->
+        <Label text="Description" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="descriptionField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+
+        <!-- Champ Prix du ticket -->
+        <Label text="Price Of Ticket" underline="true">
+            <font>
+                <Font name="Bookman Old Style Bold Italic" size="13.0" />
+            </font>
+        </Label>
+        <TextField fx:id="feeField" prefHeight="26.0" prefWidth="220.0" styleClass="input-field" />
+        <ChoiceBox fx:id="userIdField" prefHeight="38.0" prefWidth="226.0" styleClass="input-field" />
+        <StackPane fx:id="pdpContainer" styleClass="pdpContainer">
+            <ImageView fx:id="pdpImageView" fitHeight="120" fitWidth="120" onMouseClicked="#choisirImage" style="-fx-cursor: hand;" styleClass="pdpImageView">
+                <image>
+                    <Image url="@images/event.png" />
+                </image>
+            </ImageView>
+            <TextField fx:id="pdpPathField" disable="true" opacity="0.0" />
+            <Label fx:id="pdpIconLabel" style="-fx-text-fill: #888888; -fx-font-size: 24px; -fx-font-weight: bold;" text="📷" />
+
+        </StackPane>
+        <!-- Bouton de validation -->
+        <Button mnemonicParsing="false" onAction="#validate" prefHeight="28.0" prefWidth="160.0" styleClass="my-button" text="Modify" />
+    </VBox>
+    <Label layoutY="738.0" prefHeight="62.0" prefWidth="301.0" styleClass="title" text=" Update Event">
+        <font>
+            <Font name="System Bold Italic" size="36.0" />
+        </font>
+    </Label>
+    <AnchorPane />
+    <AnchorPane>
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+</AnchorPane>
