@@ -9,7 +9,7 @@ public class MyDatabase {
     private Connection connection;
     private static MyDatabase instance;
 
-    private final String URL = "jdbc:mysql://localhost:3306/event_planner";
+    private final String URL = "jdbc:mysql://localhost:3306/test";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
 

@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import tn.esprit.api.SendSMS;
+
 
 import java.io.IOException;
 
@@ -21,7 +23,7 @@ public class Addreservation {
 
     @FXML
     private ChoiceBox<Integer> venueChoiceBox; // Choice box for venues (changed to Integer)
-   // Choice box for venues (changed to Integer)
+    // Choice box for venues (changed to Integer)
     @FXML
     private ChoiceBox<Integer> eventChoiceBox; // Choice box for events (changed to Integer)
     @FXML
@@ -61,6 +63,8 @@ public class Addreservation {
             // Saving the reservation using ReservationService
             ReservationService reservationService = new ReservationService();
             reservationService.ajouter(newReservation);
+            SendSMS sm = new SendSMS();
+            sm.sendSMS("Congratulations You have successfully added a reservation");
 
             // Show success alert
             Alert alert = new Alert(AlertType.INFORMATION);

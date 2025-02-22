@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.chart.PieChart?>
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="981.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.StatController">
+    <children>
+        <ImageView fx:id="ImageP" fitHeight="697.0" fitWidth="1089.0" layoutX="-14.0" pickOnBounds="true" preserveRatio="true">
+            <!--  <image>
+                  <Image url="@/images/theme.png" />
+              </image>-->
+        </ImageView>
+        <PieChart fx:id="voy_stat" layoutX="204.0" layoutY="69.0" prefHeight="556.0" prefWidth="871.0" />
+        <ImageView fitHeight="161.0" fitWidth="159.0" layoutX="924.0" pickOnBounds="true" preserveRatio="true">
+            <!--     <image>
+                      <Image url="@/images/logo2.png" />
+                  </image> -->
+        </ImageView>
+    </children>
+    <AnchorPane />
+    <AnchorPane>
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+</AnchorPane>
