@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #7C81AB;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ModifierEvent">
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: white;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ModifierEvent">
 
     <!-- Conteneur du formulaire avec ombre -->
     <VBox layoutX="228.0" layoutY="14.0" prefHeight="713.0" prefWidth="478.0" spacing="1.0" style="-fx-padding: 15px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #7C81AB;">
