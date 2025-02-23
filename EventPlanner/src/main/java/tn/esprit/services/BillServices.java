@@ -16,7 +16,6 @@ public class BillServices implements IService<Bill> {
 
     @Override
     public void add(Bill b) throws SQLException {
-        // Method not implemented
     }
 
     @Override

@@ -2,6 +2,7 @@ package tn.esprit.services;
 
 import tn.esprit.entities.Equipment;
 import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.Arduino;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,11 @@ import java.util.List;
 
 public class EquipmentServices implements IService<Equipment> {
     private Connection con;
+    private Arduino arduino;
     public EquipmentServices() {
+
         con=MyDatabase.getInstance().getConnection();
+        arduino=Arduino.getInstance();
     }
     @Override
     public void add(Equipment e) throws SQLException {
@@ -31,6 +35,7 @@ public class EquipmentServices implements IService<Equipment> {
             System.out.println("Equipment added");
         else
             System.out.println("Equipment not added");
+
     }
 
     @Override
@@ -66,6 +71,10 @@ public class EquipmentServices implements IService<Equipment> {
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
+
+        if (arduino.isConnected()) {
+            arduino.sendData("1");
+        }
     }
 
     @Override
@@ -87,6 +96,8 @@ public class EquipmentServices implements IService<Equipment> {
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
-
+        if (arduino.isConnected()) {
+            arduino.sendData("0");
+        }
     }
 }
