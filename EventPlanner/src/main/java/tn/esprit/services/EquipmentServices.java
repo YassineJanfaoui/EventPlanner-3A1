@@ -7,6 +7,7 @@ import tn.esprit.utils.Arduino;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EquipmentServices implements IService<Equipment> {
     private Connection con;
@@ -90,15 +91,19 @@ public class EquipmentServices implements IService<Equipment> {
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated == 1) {
                 System.out.println("Equipment updated successfully");
+                System.out.println(e.getState());
+                if (Objects.equals(e.getState(), "Maintenance") || Objects.equals(e.getState(), "maintenance")) {
+                    System.out.println(e.getState());
+                    arduino.sendData("9");
+                }
             } else {
                 System.out.println("No equipment found with the given ID");
             }
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
-        if (arduino.isConnected() && e.getState()=="maintenance") {
-            arduino.sendData("9");
-        }
+
+
     }
     public List<Equipment> searchEquipmentByName(String query) throws SQLException {
         String sql = "SELECT * FROM equipment WHERE name LIKE ?";
