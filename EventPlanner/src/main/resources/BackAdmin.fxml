@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox prefHeight="622.0" prefWidth="827.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: WHITE; -fx-border-color: #053536;" GridPane.columnIndex="1">
+            <VBox prefHeight="622.0" prefWidth="827.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: #2A2A72; -fx-border-color: #053536;" GridPane.columnIndex="1">
                <effect>
                   <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
                </effect>

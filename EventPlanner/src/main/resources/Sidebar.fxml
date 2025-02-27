@@ -59,7 +59,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="Participant" styleClass="my-button2" text="Participant">
+            <Button fx:id="Participant" onAction="#navigateToParticipant" styleClass="my-button2" text="Participant">
                 <graphic>
                     <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>

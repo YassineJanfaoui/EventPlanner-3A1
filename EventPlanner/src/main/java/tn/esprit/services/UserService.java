@@ -1,7 +1,7 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.*;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.MyDataBase;
 
 import java.sql.Connection;
 import java.sql.*;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService implements IService<User> {
-    Connection con = MyDatabase.getInstance().getConnection();
+    Connection con = MyDataBase.getInstance().getConnection();
     @Override
-    public void addP(User u) {
+    public void addp(User u) {
         try {
             // Insert into the user table
             String query = "INSERT INTO user(username, password, email, name, phoneNumber, status, role) VALUES (?,?,?,?,?,?,?)";

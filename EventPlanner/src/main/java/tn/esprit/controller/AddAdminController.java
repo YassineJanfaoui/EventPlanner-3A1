@@ -82,7 +82,7 @@ public class AddAdminController {
         User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.ADMIN);
 
         // Use UserService to create the user
-        userService.addP(newUser);
+        userService.addp(newUser);
 
         // Show success message
         showAlert("Success", "Admin created successfully.");
@@ -134,14 +134,12 @@ public class AddAdminController {
     }
     void NavigateToAddAdmin() {
         try {
-            // Load the home.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/BackAdmin.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (window)
             Stage stage = (Stage) AddAdmin.getScene().getWindow();
 
-            // Set the new scene with the home.fxml content
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

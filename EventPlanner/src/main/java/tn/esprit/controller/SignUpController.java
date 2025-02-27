@@ -92,7 +92,7 @@ public class SignUpController {
         User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.valueOf(role));
 
         // Use UserService to create the user
-        userService.addP(newUser);
+        userService.addp(newUser);
 
         // Show success message
         showAlert("Success", "User created successfully.");
