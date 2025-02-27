@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import tn.esprit.entities.Bill;
 import tn.esprit.services.BillServices;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,23 +28,24 @@ public class UpdateBillController {
     @FXML
     private ComboBox<String> paymentStatusComboBox;
     @FXML
-    private ComboBox<Integer> EventID;
+    private ComboBox<String> EventID;
 
     private final BillServices billService = new BillServices();
     public Bill currentBill;
 
     public void initialize() {
         try {
-            int[] eventIDs = billService.eventIDs();
+            String[] eventNames = billService.eventNames();
             System.out.println("Fetched event IDs: ");
-            for(int eventID : eventIDs) {
-                System.out.println(eventID);
-            }
-            ObservableList<Integer> eventIdList = FXCollections.observableArrayList();
-            for (int id : eventIDs) {
+            ObservableList<String> eventIdList = FXCollections.observableArrayList();
+
+            for (String id : eventNames) {
                 eventIdList.add(id);
             }
             EventID.setItems(eventIdList);
+            if (!eventIdList.isEmpty()) {
+                EventID.getSelectionModel().selectFirst();
+            }
 
         } catch (Exception e) {
             System.out.println("Error fetching event IDs: " + e.getMessage());
@@ -57,9 +59,9 @@ public class UpdateBillController {
             String dueDateText = dueDateField.getText().trim();
             String description = descriptionField.getText().trim();
             String paymentStatus = paymentStatusComboBox.getValue();
-            Integer eventId = EventID.getValue();
+            int eventId = billService.getEventIDByName(EventID.getValue());
 
-            if (description.isEmpty() || paymentStatus == null || eventId == null) {
+            if (description.isEmpty() || paymentStatus == null || eventId == -1) {
                 showAlert(Alert.AlertType.ERROR, "Form Error", "All fields must be completed.");
                 return;
             }
@@ -78,6 +80,8 @@ public class UpdateBillController {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Amount must be a valid number.");
         } catch (ParseException e) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid date format. Use yyyy-MM-dd.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -7,14 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import tn.esprit.entities.Bill;
 import tn.esprit.entities.Equipment;
+import tn.esprit.services.BillServices;
 import tn.esprit.services.EquipmentServices;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,6 +45,10 @@ public class ShowEquipmentController {
     private TableColumn<Equipment, Integer> colEquipmentId; // Equipment ID column
 
     @FXML
+    private TextField searchEquipment;
+    private String currentSearchQuery = "";
+
+    @FXML
     void initialize() {
         EquipmentServices equipmentServices = new EquipmentServices();
         try {
@@ -61,7 +64,17 @@ public class ShowEquipmentController {
             colEquipmentId.setVisible(false);
 
             setUpButtons();
-
+            equipmentTable.setRowFactory(tv -> {
+                TableRow<Equipment> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && !row.isEmpty()) {
+                        Equipment selectedEquipment = row.getItem();
+                        showQRCodePopup(selectedEquipment);
+                    }
+                });
+                return row;
+            });
+            searchEquipment.textProperty().addListener((observable, oldValue, newValue) -> handleSearchEquipment(newValue));
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error loading equipment data", e);
@@ -117,19 +130,9 @@ public class ShowEquipmentController {
         System.out.println("Delete equipment: " + equipment);
         EquipmentServices equipmentServices = new EquipmentServices();
         equipmentServices.delete(equipment);
-        refreshTable();
+        handleSearchEquipment(currentSearchQuery);
     }
 
-    private void refreshTable() {
-        EquipmentServices equipmentServices = new EquipmentServices();
-        try {
-            ObservableList<Equipment> updatedList = FXCollections.observableList(equipmentServices.returnList());
-            equipmentTable.setItems(updatedList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error refreshing equipment data", e);
-        }
-    }
 
     @FXML
     public void navigateToAddEquipment(ActionEvent event) {
@@ -160,6 +163,38 @@ public class ShowEquipmentController {
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+    private void showQRCodePopup(Equipment equipment) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/qrcode.fxml"));
+            Parent root = loader.load();
+
+            QRcodeController controller = loader.getController();
+            controller.setEquipmentData(equipment);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Equipment QR Code");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void handleSearchEquipment(String searchQuery) {
+        EquipmentServices equipmentServices = new EquipmentServices();
+        currentSearchQuery = searchQuery;
+        try {
+            ObservableList<Equipment> allEquipment = FXCollections.observableList(equipmentServices.returnList());
+            ObservableList<Equipment> filteredEquipment = FXCollections.observableArrayList(equipmentServices.searchEquipmentByName(searchQuery));
+            if (searchQuery == null || searchQuery.isEmpty()) {
+                equipmentTable.setItems(allEquipment);
+            } else {
+                equipmentTable.setItems(filteredEquipment);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching bills: " + e.getMessage());
         }
     }
 }

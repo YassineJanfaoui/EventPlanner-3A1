@@ -73,7 +73,7 @@ public class EquipmentServices implements IService<Equipment> {
         }
 
         if (arduino.isConnected()) {
-            arduino.sendData("1");
+            arduino.sendData("9");
         }
     }
 
@@ -96,8 +96,27 @@ public class EquipmentServices implements IService<Equipment> {
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
-        if (arduino.isConnected()) {
-            arduino.sendData("0");
+        if (arduino.isConnected() && e.getState()=="maintenance") {
+            arduino.sendData("9");
         }
     }
+    public List<Equipment> searchEquipmentByName(String query) throws SQLException {
+        String sql = "SELECT * FROM equipment WHERE name LIKE ?";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + query + "%");  // Use wildcards to allow partial matching
+        ResultSet resultSet = statement.executeQuery();
+
+        List<Equipment> equipmentList = new ArrayList<>();
+        while (resultSet.next()) {
+            Equipment e = new Equipment();
+            e.setEquipmentId(resultSet.getInt("Equipmentid"));
+            e.setName(resultSet.getString("name"));
+            e.setState(resultSet.getString("state"));
+            e.setCategory(resultSet.getString("category"));
+            e.setQuantity(resultSet.getInt("quantity"));
+            equipmentList.add(e);
+        }
+        return equipmentList;
+    }
+
 }

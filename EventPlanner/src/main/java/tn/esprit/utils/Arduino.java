@@ -6,22 +6,20 @@ import java.io.OutputStream;
 import java.util.Scanner;
 
 public class Arduino {
-    private static Arduino instance; // Singleton instance
+    private static Arduino instance;
     private SerialPort serialPort;
     private OutputStream outputStream;
     private InputStream inputStream;
     private Scanner scanner;
 
-    // Private constructor to initialize connection automatically
     private Arduino() {
         try {
-            connect("COM5", 9600); // Default port and baud rate
+            connect("COM9", 115200); // Default port and baud rate
         } catch (Exception e) {
             System.out.println("Error initializing Arduino connection: " + e.getMessage());
         }
     }
 
-    // Singleton instance retrieval
     public static Arduino getInstance() {
         if (instance == null) {
             instance = new Arduino();
@@ -29,7 +27,6 @@ public class Arduino {
         return instance;
     }
 
-    // Connect to the Arduino
     public boolean connect(String portName, int baudRate) {
         serialPort = SerialPort.getCommPort(portName);
         serialPort.setBaudRate(baudRate);
