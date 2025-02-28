@@ -15,6 +15,20 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import tn.esprit.api.SendSMS;
+import java.io.*;
+import java.net.*;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.util.List;
+
 
 
 import java.io.IOException;
@@ -136,4 +150,7 @@ public class Addreservation {
             e.printStackTrace();
         }
     }
+
+
+
 }

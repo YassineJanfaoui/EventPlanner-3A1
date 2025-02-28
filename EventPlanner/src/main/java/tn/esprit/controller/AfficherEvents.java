@@ -1,6 +1,7 @@
 package tn.esprit.controller;
 
 import com.google.protobuf.compiler.PluginProtos;
+import com.google.zxing.WriterException;
 import com.itextpdf.text.DocumentException;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -321,13 +322,18 @@ public class AfficherEvents {
     }
     @FXML
     private void exportToPdf() {
+        EventService eventService = new EventService();
         try {
-            ArrayList<Event> events = eventService.rechercher(); // Récupérer les événements
+            ArrayList<Event> events = eventService.rechercher();
+            // Récupérer les événements
             PDFEVENT pdfGenerator = new PDFEVENT();
-            pdfGenerator.GeneratePdf("Liste_Events", events);
+            ArrayList<Event> eventsAvecRevenu = eventService.rechercher();
+            pdfGenerator.generatePdf("Liste_Events", eventsAvecRevenu, eventService);
             System.out.println("✅ PDF généré avec succès !");
         } catch (DocumentException | IOException e) {
             System.err.println("❌ Erreur lors de l'exportation du PDF: " + e.getMessage());
+        } catch (com.itextpdf.text.pdf.qrcode.WriterException e) {
+            throw new RuntimeException(e);
         }
     }
 
