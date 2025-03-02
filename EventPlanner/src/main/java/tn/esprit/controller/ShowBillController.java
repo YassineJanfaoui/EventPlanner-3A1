@@ -11,12 +11,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.entities.Bill;
 import tn.esprit.services.BillServices;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -74,6 +77,7 @@ public class ShowBillController {
             setUpButtons();
             searchBill.textProperty().addListener((observable, oldValue, newValue) -> handleSearchBill(newValue));
             applyRowColoring();
+            showNotification();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -233,5 +237,37 @@ public class ShowBillController {
             return row;
         });
     }
+    public void showNotification(){
+        BillServices billServices = new BillServices();
+        try {
+            int billsDue = billServices.getBillsDueInAWeek();
+            String billsDueString = String.valueOf(billsDue);
+            String message;
+            if(billsDue>1)
+                message = "You have "+billsDueString+" bills due next week or sooner.";
+            else if(billsDue==1)
+                message = "You have "+billsDueString+" bill due next week";
+            else  {
+                message="You have no upcoming bills.";
+            }
+            if (SystemTray.isSupported()) {
+            SystemTray tray = SystemTray.getSystemTray();
+            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
 
+            TrayIcon trayIcon = new TrayIcon(image, "Java Notification");
+            trayIcon.setImageAutoSize(true);
+            trayIcon.setToolTip("Bills Due");
+
+            try {
+                tray.add(trayIcon);
+                trayIcon.displayMessage("Reminder", message, TrayIcon.MessageType.INFO);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("System tray not supported!");
+        }} catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

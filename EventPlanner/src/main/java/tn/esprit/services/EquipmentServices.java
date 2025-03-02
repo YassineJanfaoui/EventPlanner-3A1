@@ -91,9 +91,7 @@ public class EquipmentServices implements IService<Equipment> {
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated == 1) {
                 System.out.println("Equipment updated successfully");
-                System.out.println(e.getState());
                 if (Objects.equals(e.getState(), "Maintenance") || Objects.equals(e.getState(), "maintenance")) {
-                    System.out.println(e.getState());
                     arduino.sendData("9");
                 }
             } else {
@@ -122,6 +120,22 @@ public class EquipmentServices implements IService<Equipment> {
             equipmentList.add(e);
         }
         return equipmentList;
+    }
+    public void addEquipmentToEvent(int eventId, int equipmentId) {
+        String query = "INSERT INTO eventequipment (eventid, equipmentid) VALUES (?, ?)";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, eventId);
+            pst.setInt(2, equipmentId);
+            int rowsInserted = pst.executeUpdate();
+            if (rowsInserted == 1) {
+                System.out.println("Equipment successfully added to the event");
+            } else {
+                System.out.println("Failed to add equipment to the event");
+            }
+        } catch (SQLException se) {
+            System.out.println(se.getMessage());
+        }
     }
 
 }

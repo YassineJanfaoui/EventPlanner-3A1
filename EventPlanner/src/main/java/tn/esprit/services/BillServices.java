@@ -142,6 +142,15 @@ public class BillServices implements IService<Bill> {
         }
         return bills;
     }
+    public int getBillsDueInAWeek() throws SQLException {
+        String query = "SELECT COUNT(*) FROM bill WHERE duedate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
 
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
 
 }
