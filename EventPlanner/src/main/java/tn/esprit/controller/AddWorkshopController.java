@@ -55,29 +55,74 @@ public class AddWorkshopController {
         try {
             String title = titleField.getText().trim();
             String coach = coachField.getText().trim();
-            int duration = Integer.parseInt(durationField.getText().trim());
+            String durationText = durationField.getText().trim();
             String startDateText = startDateField.getText().trim();
             String description = descriptionField.getText().trim();
             Integer partnerId = partnerIdComboBox.getValue();
 
-            if (title.isEmpty() || coach.isEmpty() || description.isEmpty() || partnerId == null) {
+            // Check if all fields are filled
+            if (title.isEmpty() || coach.isEmpty() || description.isEmpty() || partnerId == null || durationText.isEmpty() || startDateText.isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Form Error", "All fields must be completed.");
                 return;
             }
 
-            Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateText);
-            Workshop workshop = new Workshop(0, title, coach, duration, startDate, description, partnerId);
+            // Validate title and coach (only letters)
+            if (!title.matches("[a-zA-Z\\s]+")) {
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Title must only contain letters.");
+                return;
+            }
+            if (!coach.matches("[a-zA-Z\\s]+")) {
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Coach name must only contain letters.");
+                return;
+            }
 
+            // Parse and validate duration (must be a positive number)
+            int duration;
+            try {
+                duration = Integer.parseInt(durationText);
+                if (duration <= 0) {
+                    showAlert(Alert.AlertType.ERROR, "Input Error", "Duration must be a positive number.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Duration must be a valid number.");
+                return;
+            }
+
+            // Parse and validate date (yyyy-MM-dd)
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setLenient(false);
+            Date startDate;
+            try {
+                startDate = dateFormat.parse(startDateText);
+            } catch (ParseException e) {
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid date format. Use yyyy-MM-dd.");
+                return;
+            }
+
+            // Get today's date without time (to compare only dates, ignoring time of day)
+            Date today = new Date();
+            SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date todayWithoutTime = dateOnlyFormat.parse(dateOnlyFormat.format(today));
+            Date startDateWithoutTime = dateOnlyFormat.parse(dateOnlyFormat.format(startDate));
+
+            // Check if the start date is before today
+            if (startDateWithoutTime.before(todayWithoutTime)) {
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Start date cannot be in the past.");
+                return;
+            }
+
+            // Create and save the workshop
+            Workshop workshop = new Workshop(0, title, coach, duration, startDate, description, partnerId);
             workshopService.addP(workshop);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Workshop added successfully.");
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Duration must be a valid number.");
-        } catch (ParseException e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid date format. Use yyyy-MM-dd.");
+
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
+
+
 
     @FXML
     public void navigateToShowWorkshop(ActionEvent event) {

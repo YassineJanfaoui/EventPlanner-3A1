@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import tn.esprit.entities.Partner;
 import tn.esprit.services.PartnerServices;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class UpdatePartnerController {
 
@@ -22,27 +23,36 @@ public class UpdatePartnerController {
     private Partner currentPartner;
 
     @FXML
-    public void handleUpdatePartner(ActionEvent event) {
+    private void handleUpdatePartner() {
         try {
-            String name = nameField.getText().trim();
-            String category = categoryField.getText().trim();
+            String partnerName = nameField.getText().trim();
+            String categoryName = categoryField.getText().trim();
 
-            if (name.isEmpty() || category.isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Form Error", "All fields must be completed.");
+            if (partnerName.isEmpty() || categoryName.isEmpty()) {
+                showAlert("Error", "Partner Name and Category are required!");
                 return;
             }
 
-            Partner partner = new Partner(currentPartner.getPartnerId(), name, category);
-
-            try {
-                partnerService.update(partner);
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Partner updated successfully.");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            // Validate that partnerName and category only contain letters and spaces
+            if (!partnerName.matches("[a-zA-Z\\s]+")) {
+                showAlert("Error", "Partner Name must only contain letters and spaces!");
+                return;
             }
 
+            if (!categoryName.matches("[a-zA-Z\\s]+")) {
+                showAlert("Error", "Category must only contain letters and spaces!");
+                return;
+            }
+
+            Partner partner = new Partner(currentPartner.getPartnerId(), partnerName, categoryName);
+
+            partnerService.update(partner);
+
+            showAlert("Success", "Partner updated successfully!");
+
+
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid input.");
+            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -65,8 +75,8 @@ public class UpdatePartnerController {
         categoryField.setText(currentPartner.getCategory());
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
