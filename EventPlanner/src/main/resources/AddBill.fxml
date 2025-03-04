@@ -4,6 +4,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -23,7 +24,7 @@
         <TextField fx:id="amountField" promptText="Enter amount" styleClass="input-field" />
 
         <Label text="Due Date" />
-        <TextField fx:id="dueDateField" promptText="yyyy-MM-dd" styleClass="input-field" />
+        <DatePicker fx:id="dueDateField" prefWidth="412" minWidth="400" promptText="yyyy-MM-dd" styleClass="input-field" />
 
         <Label text="Description" />
         <TextField fx:id="descriptionField" promptText="Description" styleClass="input-field" />
@@ -32,13 +33,13 @@
         <ComboBox fx:id="paymentStatusComboBox" minWidth="400" prefWidth="400.0" styleClass="input-field">
             <items>
                 <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="PENDING" />
-                    <String fx:value="PAID" />
-                    <String fx:value="CANCELLED" />
+                    <String fx:value="Pending" />
+                    <String fx:value="Paid" />
+                    <String fx:value="Cancelled" />
                 </FXCollections>
             </items>
         </ComboBox>
-        <Label text="Event ID" />
+        <Label text="Event Name" />
         <ComboBox fx:id="EventID" minWidth="400" prefWidth="400.0" styleClass="input-field">
             <items>
                 <FXCollections fx:factory="observableArrayList">

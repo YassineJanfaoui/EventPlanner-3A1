@@ -16,7 +16,6 @@ public class BillServices implements IService<Bill> {
 
     @Override
     public void add(Bill b) throws SQLException {
-        // Method not implemented
     }
 
     @Override
@@ -100,14 +99,58 @@ public class BillServices implements IService<Bill> {
             System.out.println(se.getMessage());
         }
     }
-    public int[] eventIDs() throws SQLException {
-        String query = "SELECT eventID FROM event";
+    public int getEventIDByName(String name) throws SQLException {
+        String query = "SELECT eventID FROM event WHERE name = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, name);
+
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("eventID");
+        } else {
+            return -1;
+        }
+    }
+
+    public String[] eventNames() throws SQLException {
+        String query = "SELECT name FROM event";  // Change eventName to the actual column name if different
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
-        List<Integer> eventIDsList = new ArrayList<>();
+        List<String> eventNamesList = new ArrayList<>();
         while (rs.next()) {
-            eventIDsList.add(rs.getInt("eventID"));
+            eventNamesList.add(rs.getString("name"));  // Get event name from the result set
         }
-        return eventIDsList.stream().mapToInt(i -> i).toArray();
+        return eventNamesList.toArray(new String[0]);  // Convert list to array and return it
     }
+    public List<Bill> searchBillsByDescription(String query) throws SQLException {
+        String sql = "SELECT * FROM bill WHERE description LIKE ? OR amount LIKE ?";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + query + "%");
+        statement.setString(2, "%" + query + "%");
+        ResultSet resultSet = statement.executeQuery();
+
+        List<Bill> bills = new ArrayList<>();
+        while (resultSet.next()) {
+            Bill bill = new Bill();
+            bill.setBillId(resultSet.getInt("billId"));
+            bill.setAmount(resultSet.getInt("amount"));
+            bill.setDueDate(resultSet.getDate("dueDate"));
+            bill.setDescription(resultSet.getString("description"));
+            bill.setPaymentStatus(resultSet.getString("paymentStatus"));
+            bill.setEventID(resultSet.getInt("eventID"));
+            bills.add(bill);
+        }
+        return bills;
+    }
+    public int getBillsDueInAWeek() throws SQLException {
+        String query = "SELECT COUNT(*) FROM bill WHERE duedate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
 }

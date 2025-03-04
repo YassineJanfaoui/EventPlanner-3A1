@@ -9,11 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import tn.esprit.entities.Bill;
 import tn.esprit.services.BillServices;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class AddBillController {
@@ -21,22 +24,23 @@ public class AddBillController {
     @FXML
     private TextField amountField;
     @FXML
-    private TextField dueDateField;
+    private DatePicker dueDateField;
     @FXML
     private TextField descriptionField;
     @FXML
     private ComboBox<String> paymentStatusComboBox;
     @FXML
-    private ComboBox<Integer> EventID;
+    private ComboBox<String> EventID;
 
     private final BillServices billService = new BillServices();
 
     public void initialize() {
         try {
-            int[] eventIDs = billService.eventIDs();
+            String[] eventNames = billService.eventNames();
             System.out.println("Fetched event IDs: ");
-            ObservableList<Integer> eventIdList = FXCollections.observableArrayList();
-            for (int id : eventIDs) {
+            ObservableList<String> eventIdList = FXCollections.observableArrayList();
+
+            for (String id : eventNames) {
                 eventIdList.add(id);
             }
             EventID.setItems(eventIdList);
@@ -48,18 +52,36 @@ public class AddBillController {
     {
         System.out.println("Error fetching event IDs: " + e.getMessage());
     }
+        LocalDate currentDate = LocalDate.now();
+        dueDateField.setValue(currentDate);
+        dueDateField.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        // Disable past dates
+                        if (date.isBefore(currentDate)) {
+                            setDisable(true); // Disable past dates
+                            setStyle("-fx-background-color: #f0f0f0;"); // Optional: grey out the disabled dates
+                        }
+                    }
+                };
+            }
+        });
 }
 
     @FXML
     public void handleAddBill(ActionEvent event) {
         try {
             int amount = Integer.parseInt(amountField.getText().trim());
-            String dueDateText = dueDateField.getText().trim();
+            String dueDateText = dueDateField.getValue().toString();
             String description = descriptionField.getText().trim();
             String paymentStatus = paymentStatusComboBox.getValue();
-            Integer eventId = EventID.getValue();
+            int eventId = billService.getEventIDByName(EventID.getValue());
 
-            if (description.isEmpty() || paymentStatus == null || eventId == null) {
+            if (description.isEmpty() || paymentStatus == null || eventId == -1) {
                 showAlert(Alert.AlertType.ERROR, "Form Error", "All fields must be completed.");
                 return;
             }
@@ -77,6 +99,8 @@ public class AddBillController {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Amount must be a valid number.");
         } catch (ParseException e) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid date format. Use yyyy-MM-dd.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

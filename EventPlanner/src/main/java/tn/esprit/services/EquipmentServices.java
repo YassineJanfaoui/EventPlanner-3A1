@@ -2,15 +2,20 @@ package tn.esprit.services;
 
 import tn.esprit.entities.Equipment;
 import tn.esprit.utils.MyDatabase;
+import tn.esprit.utils.Arduino;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EquipmentServices implements IService<Equipment> {
     private Connection con;
+    private Arduino arduino;
     public EquipmentServices() {
+
         con=MyDatabase.getInstance().getConnection();
+        arduino=Arduino.getInstance();
     }
     @Override
     public void add(Equipment e) throws SQLException {
@@ -31,6 +36,7 @@ public class EquipmentServices implements IService<Equipment> {
             System.out.println("Equipment added");
         else
             System.out.println("Equipment not added");
+
     }
 
     @Override
@@ -66,6 +72,10 @@ public class EquipmentServices implements IService<Equipment> {
         } catch (SQLException se) {
             System.out.println(se.getMessage());
         }
+
+        if (arduino.isConnected()) {
+            arduino.sendData("9");
+        }
     }
 
     @Override
@@ -81,6 +91,9 @@ public class EquipmentServices implements IService<Equipment> {
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated == 1) {
                 System.out.println("Equipment updated successfully");
+                if (Objects.equals(e.getState(), "Maintenance") || Objects.equals(e.getState(), "maintenance")) {
+                    arduino.sendData("9");
+                }
             } else {
                 System.out.println("No equipment found with the given ID");
             }
@@ -88,5 +101,41 @@ public class EquipmentServices implements IService<Equipment> {
             System.out.println(se.getMessage());
         }
 
+
     }
+    public List<Equipment> searchEquipmentByName(String query) throws SQLException {
+        String sql = "SELECT * FROM equipment WHERE name LIKE ?";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + query + "%");  // Use wildcards to allow partial matching
+        ResultSet resultSet = statement.executeQuery();
+
+        List<Equipment> equipmentList = new ArrayList<>();
+        while (resultSet.next()) {
+            Equipment e = new Equipment();
+            e.setEquipmentId(resultSet.getInt("Equipmentid"));
+            e.setName(resultSet.getString("name"));
+            e.setState(resultSet.getString("state"));
+            e.setCategory(resultSet.getString("category"));
+            e.setQuantity(resultSet.getInt("quantity"));
+            equipmentList.add(e);
+        }
+        return equipmentList;
+    }
+    public void addEquipmentToEvent(int eventId, int equipmentId) {
+        String query = "INSERT INTO eventequipment (eventid, equipmentid) VALUES (?, ?)";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, eventId);
+            pst.setInt(2, equipmentId);
+            int rowsInserted = pst.executeUpdate();
+            if (rowsInserted == 1) {
+                System.out.println("Equipment successfully added to the event");
+            } else {
+                System.out.println("Failed to add equipment to the event");
+            }
+        } catch (SQLException se) {
+            System.out.println(se.getMessage());
+        }
+    }
+
 }
