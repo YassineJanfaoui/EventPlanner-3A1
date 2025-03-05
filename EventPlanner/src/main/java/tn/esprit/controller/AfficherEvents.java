@@ -106,6 +106,7 @@ public class AfficherEvents {
         data.addAll(eventService.rechercher());  // Load data from the service
 
         colId.setCellValueFactory(new PropertyValueFactory<>("eventId"));
+        colId.setVisible(false); // Hide the column
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         colEndDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
@@ -118,7 +119,6 @@ public class AfficherEvents {
         // Set custom cell factory for image column
         colImage.setCellFactory(param -> new TableCell<Event, String>() {
             private final ImageView imageView = new ImageView();
-
             @Override
             protected void updateItem(String imagePath, boolean empty) {
                 super.updateItem(imagePath, empty);

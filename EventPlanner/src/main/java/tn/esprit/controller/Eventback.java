@@ -2,6 +2,11 @@
 
 package tn.esprit.controller;
 
+import com.sun.javafx.charts.Legend;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import tn.esprit.entities.Event;
 
 
@@ -19,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Optional;
@@ -34,8 +40,14 @@ public class Eventback {
     private GridPane usersGrid;
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ChoiceBox<String> critere;
 
     public void initialize() {
+        initializeChoiceBox();
+        setupChoiceBoxListener();
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);  // Barre de défilement verticale toujours visible
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);   // Pas de barre de défilement horizontale
         scrollPane.setFitToWidth(true);  // Ajuste automatiquement la largeur du contenu à celle du ScrollPane
@@ -45,6 +57,10 @@ public class Eventback {
         ArrayList<Event> users = eventService.rechercher(); // Appel via l'instance
         usersGrid.getChildren().clear();
         populateUsersGrid(users);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherParNom(newValue);
+
+        });
     }
 
     private void populateUsersGrid(ArrayList<Event> users) {
@@ -305,5 +321,44 @@ public class Eventback {
 
         // Ajoutez gridPane à un conteneur parent si nécessaire (ex. root.getChildren().add(gridPane));
     }
+    private void rechercherParNom(String nom) {
+        usersGrid.getChildren().clear(); // Effacer l'ancien contenu de la grille
+
+        EventService eventService = new EventService(); // Créer une instance du service
+        ArrayList<Event> events = eventService.rechercherParNom(nom); // Récupérer les événements filtrés
+
+        populateUsersGrid(events); // Afficher les événements filtrés dans la grille
+    }
+    private String convertirCritere(String critere) {
+        switch (critere) {
+            case "startDate":
+                return "startDate"; // Nom de la colonne dans la base de données
+            case "fee":
+                return "fee";
+            case "description":
+                return "description";
+            default:
+                return "maxParticipants"; // Par défaut, tri par date
+        }
+    }
+
+    private void initializeChoiceBox() {
+        critere.getItems().addAll("startDate", "fee", "description", "maxParticipants" ); // Ajoutez les critères de tri
+        critere.getSelectionModel().selectFirst(); // Sélectionne le premier élément par défaut
+
+    }
+
+    private void setupChoiceBoxListener() {
+        EventService eventService = new EventService(); // Instance du service
+
+        critere.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            String tri = convertirCritere(newValue); // Convertir en colonne SQL
+            ArrayList<Event> sortedEvents = eventService.affichageAvecTri(tri); // Récupérer les événements triés
+
+            usersGrid.getChildren().clear(); // Vider la grille avant d'afficher les nouveaux résultats
+            populateUsersGrid(sortedEvents); // Afficher les événements triés
+        });
+    }
+
 
 }
