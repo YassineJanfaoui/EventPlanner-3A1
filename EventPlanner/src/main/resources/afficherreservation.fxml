@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: white;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.Afficherreservation">
+<?import javafx.scene.control.TextArea?>
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #7C81AB;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.Afficherreservation">
 
     <VBox layoutX="134.0" layoutY="145.0" prefHeight="384.0" prefWidth="639.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #053536;">
         <effect>
@@ -27,6 +28,11 @@
                 </columns>
             </TableView>
                     <Button fx:id="btnModifyEvents" layoutX="42.0" layoutY="16.0" onAction="#handleModifyEvents" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Add Reservation" />
+
+            <Button fx:id="startButton" text="Recognize Speech" layoutX="50" layoutY="50" onAction="#startRecording"/>
+            <Button fx:id="stopButton" text="Recognize Speech" layoutX="50" layoutY="50" onAction="#stopRecording"/>
+                <TextArea fx:id="transcriptArea" layoutX="50" layoutY="100" prefWidth="400" prefHeight="200" promptText="Transcription will appear here..."/>
+
         </children>
 
     </VBox>

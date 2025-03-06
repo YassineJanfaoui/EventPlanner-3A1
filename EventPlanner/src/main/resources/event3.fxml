@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -35,7 +36,18 @@
 
 
                 </columns>
+
             </TableView>
+         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+               <Button fx:id="btnplay" layoutX="14.0" layoutY="10.0" onAction="#play" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Play Music" />
+               <Button fx:id="btnplayy" layoutX="14.0" layoutY="53.0" onAction="#pause" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Stop Music" />
+               <Button fx:id="btncsv" layoutX="341.0" layoutY="10.0" onAction="#generateCsvFile" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text=" csv" />
+               <Button fx:id="btncsv1" layoutX="341.0" layoutY="53.0" onAction="#NavToStat" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Stat" />
+            </children>
+         </AnchorPane>
+
+
         </children>
 
     </VBox>
@@ -112,13 +124,20 @@
             </Button>
         </VBox>
     </AnchorPane>
-   <AnchorPane layoutX="305.0" layoutY="542.0" prefHeight="62.0" prefWidth="410.0">
-      <children>
-           <Button fx:id="btnModifyEvents" layoutX="42.0" layoutY="16.0" onAction="#handleModifyEvents" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Add Event" />
-      </children>
-   </AnchorPane>
+    <AnchorPane layoutX="305.0" layoutY="542.0" prefHeight="62.0" prefWidth="410.0">
+        <children>
+            <HBox>
+                <Button fx:id="btnModifyEvents" layoutX="42.0" layoutY="16.0" onAction="#handleModifyEvents" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Add Event" />
+            </HBox>
+            <VBox />
+            <Button fx:id="btnExporttopdf" layoutX="181.0" onAction="#exportToPdf" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Export to PDF" />
+
+        </children>
+
+    </AnchorPane>
     <AnchorPane>
         <fx:include source="Sidebar.fxml" />
     </AnchorPane>
+    <Button fx:id="btnexcel" layoutX="388.0" layoutY="588.0" onAction="#excelfile" prefHeight="25.0" prefWidth="150.0" styleClass="my-button" text="Excel file" />
 
 </AnchorPane>

@@ -6,6 +6,7 @@ import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 public class EventService implements IService<Event> {
 
@@ -178,4 +179,82 @@ public class EventService implements IService<Event> {
     public void update(Event event) {
 
     }
+    public ArrayList<Event> rechercherParNom(String chaine) {
+        ArrayList<Event> events = new ArrayList<>();
+
+        String req = "SELECT * FROM event WHERE " +
+                "name LIKE ? OR startDate LIKE ? OR description LIKE ?";
+
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+
+            // Appliquer le filtre sur les champs pertinents
+            for (int i = 1; i <= 3; i++) {
+                pst.setString(i, "%" + chaine + "%");
+            }
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                events.add(new Event(
+                        rs.getInt("eventId"),         // eventId as id
+                        rs.getString("name"),         // name as name
+                        rs.getString("startDate"),    // startDate as startDate (String)
+                        rs.getString("endDate"),      // endDate as endDate (String)
+                        rs.getInt("maxParticipants"),// maxParticipants
+                        rs.getString("description"), // description as description
+                        rs.getInt("fee"),             // fee as fee
+                        rs.getInt("userId"),          // userId as userId (foreign key)
+                        rs.getString("image")         // image as image
+                ));
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+
+        return events;
+    }
+
+
+    public ArrayList<Event> affichageAvecTri(String critere) {
+        ArrayList<Event> events = new ArrayList<>();
+
+        // Liste des critères autorisés pour éviter l'injection SQL
+        List<String> criteresAutorises = Arrays.asList("startDate", "fee", "description", "maxParticipants");
+
+        // Vérification si le critère est valide, sinon utiliser un critère par défaut
+        if (!criteresAutorises.contains(critere)) {
+            System.out.println("Critère de tri invalide, utilisation du tri par défaut (date).");
+            critere = "startDate"; // Tri par défaut
+        }
+
+        // Construction sécurisée de la requête SQL
+        String req = "SELECT * FROM event ORDER BY " + critere;
+
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                events.add(new Event(
+                        rs.getInt("eventId"),         // eventId as id
+                        rs.getString("name"),         // name as name
+                        rs.getString("startDate"),    // startDate as startDate (String)
+                        rs.getString("endDate"),      // endDate as endDate (String)
+                        rs.getInt("maxParticipants"),// maxParticipants
+                        rs.getString("description"), // description as description
+                        rs.getInt("fee"),             // fee as fee
+                        rs.getInt("userId"),          // userId as userId (foreign key)
+                        rs.getString("image")         // image as image
+                ));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+
+        return events;
+    }
+
 }

@@ -1,5 +1,7 @@
 package tn.esprit.controller;
 
+import javafx.stage.FileChooser;
+import org.json.JSONObject;
 import tn.esprit.entities.Reservation;
 import tn.esprit.services.ReservationService;
 import javafx.collections.FXCollections;
@@ -15,9 +17,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.io.IOException;
-
+import java.io.*;
+import java.net.*;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.event.ActionEvent;
+import javax.sound.sampled.*;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.sound.sampled.*;  // Java Sound API (Built into Java)
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 public class Afficherreservation {
 
     @FXML
@@ -37,7 +53,14 @@ public class Afficherreservation {
 
     @FXML
     private Button btnModifyReservation;
-
+        @FXML
+        private Button recognizeButton;
+         @FXML
+       private TextArea transcriptArea;
+        @FXML
+        private Button choose;
+    @FXML
+    private Button startButton, stopButton;
     private final ObservableList<Reservation> data = FXCollections.observableArrayList();
     private final ReservationService reservationService = new ReservationService();
 
@@ -215,6 +238,135 @@ public class Afficherreservation {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+
+    private static final String ACCESS_TOKEN = "YCFB3UKMP4B3VOAWQGZKS3GYKJZN3DIY"; // Replace with your Wit.ai server access token
+    private static final String FILE_NAME = "recorded_audio.wav";
+    private TargetDataLine microphone;
+    private Thread recordingThread;
+    private boolean isRecording = false;
+
+
+
+    @FXML
+    public void startRecording(ActionEvent event) {
+        isRecording = true;
+
+        // Définition du format audio
+        AudioFormat format = new AudioFormat(16000, 16, 1, true, true);
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+
+        try {
+            if (!AudioSystem.isLineSupported(info)) {
+                transcriptArea.setText("Microphone non supporté !");
+                return;
+            }
+
+            microphone = (TargetDataLine) AudioSystem.getLine(info);
+            microphone.open(format);
+            microphone.start();
+
+            // Création du thread d'enregistrement
+            recordingThread = new Thread(() -> {
+                File wavFile = new File(FILE_NAME);
+
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                     AudioInputStream ais = new AudioInputStream(microphone)) {
+
+                    byte[] buffer = new byte[1024];
+                    while (isRecording) {
+                        int bytesRead = ais.read(buffer, 0, buffer.length);
+                        if (bytesRead > 0) {
+                            out.write(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    // Arrêter et fermer le microphone correctement
+                    microphone.stop();
+                    microphone.close();
+
+                    // Sauvegarde du fichier audio avec un en-tête WAV valide
+                    byte[] audioData = out.toByteArray();
+                    try (ByteArrayInputStream bais = new ByteArrayInputStream(audioData);
+                         AudioInputStream audioInputStream = new AudioInputStream(bais, format, audioData.length / format.getFrameSize())) {
+
+                        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, wavFile);
+                    }
+
+                    // Vérification : afficher l'emplacement du fichier
+                    System.out.println("✅ Fichier enregistré : " + wavFile.getAbsolutePath());
+
+                    // Envoyer le fichier audio à Wit.ai
+                    sendAudioToWit(FILE_NAME);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    transcriptArea.setText("Erreur lors de l'enregistrement : " + e.getMessage());
+                }
+            });
+
+            recordingThread.start();
+            transcriptArea.setText("Enregistrement en cours...");
+
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+            transcriptArea.setText("Erreur: " + e.getMessage());
+        }
+    }
+
+
+    @FXML
+    public void stopRecording(ActionEvent event) {
+        isRecording = false;
+        if (microphone != null) {
+            microphone.stop();
+            microphone.close();
+        }
+        transcriptArea.setText("Enregistrement arrêté. Envoi au serveur...");
+    }
+
+    private void sendAudioToWit(String audioFilePath) {
+        File audioFile = new File(audioFilePath);
+        try {
+            URL url = new URL("https://api.wit.ai/speech?v=20250228");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
+            connection.setRequestProperty("Content-Type", "audio/wav");
+            connection.setDoOutput(true);
+
+            try (OutputStream os = connection.getOutputStream();
+                 FileInputStream fis = new FileInputStream(audioFile)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            }
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+
+                // Convertir la réponse JSON en un objet utilisable
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                // Extraire le texte uniquement
+                String recognizedText = jsonResponse.optString("text", "Aucune transcription");
+
+                // Afficher uniquement le texte
+                transcriptArea.setText(recognizedText.trim());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            transcriptArea.setText("Erreur d'envoi : " + e.getMessage());
         }
     }
 
