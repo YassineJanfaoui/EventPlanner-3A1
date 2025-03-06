@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.UpdateTeamController">
+
+    <VBox layoutX="203.0" layoutY="70.0" prefHeight="465.0" prefWidth="460.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-color: #053536;">
+        <effect>
+            <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
+        </effect>
+
+        <Label text="Team Name" />
+        <TextField fx:id="teamNameField" promptText="Enter team name" styleClass="input-field" />
+
+        <Label text="Event Name" />
+        <ComboBox fx:id="eventNameComboBox" minWidth="400" prefWidth="400.0" styleClass="input-field">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <HBox>
+            <Button mnemonicParsing="false" fx:id="updateButton" onAction="#handleUpdateTeam" prefHeight="19.0" prefWidth="205.0" styleClass="my-button" text="Update Team" />
+            <Button mnemonicParsing="false" onAction="#navigateToShowTeam" prefHeight="31.0" prefWidth="203.0" styleClass="my-button" text="Back to list" />
+        </HBox>
+    </VBox>
+
+    <Label layoutX="291.0" layoutY="8.0" styleClass="title" text="Update Team">
+        <font>
+            <Font name="System Bold Italic" size="36.0" />
+        </font>
+    </Label>
+    <AnchorPane prefHeight="678.0" prefWidth="140.0">
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+
+</AnchorPane>

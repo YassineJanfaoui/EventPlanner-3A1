@@ -1,12 +1,14 @@
 package tn.esprit.entities;
 
 import javafx.scene.control.Button;
+import tn.esprit.utils.SentimentAnalyzer;
 
 public class Feedback {
     private int FeedbackId;
     private String comment;
     private int rate;
     private int teamId,eventId;
+    private String sentiment;
 
     public Feedback() {
     }
@@ -17,6 +19,7 @@ public class Feedback {
         this.rate = rate;
         this.teamId = teamId;
         this.eventId = eventId;
+        this.sentiment = SentimentAnalyzer.analyze(comment);
     }
 
     public Feedback(String comment, int rate, int teamId, int eventId) {
@@ -24,6 +27,7 @@ public class Feedback {
         this.rate = rate;
         this.teamId = teamId;
         this.eventId = eventId;
+
     }
 
     @Override
@@ -77,5 +81,11 @@ public class Feedback {
         this.rate = rate;
     }
 
+    public String getSentiment() {
+        return sentiment;
+    }
 
+    public void setSentiment(String sentiment) {
+        this.sentiment = sentiment;
+    }
 }

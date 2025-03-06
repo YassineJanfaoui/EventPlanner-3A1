@@ -5,7 +5,6 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
@@ -17,8 +16,11 @@
             fx:controller="tn.esprit.controller.SidebarController"
             prefHeight="400.0" prefWidth="140.0"
             stylesheets="@styles/button.css">
+
+    <!-- Inner AnchorPane for the sidebar content -->
     <AnchorPane prefWidth="140">
-        <VBox styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" >
+        <VBox styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <!-- Logo -->
             <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/logo.png" />
@@ -30,6 +32,8 @@
                     <Rectangle2D />
                 </viewport>
             </ImageView>
+
+            <!-- Sidebar Buttons -->
             <Button styleClass="my-button2" text="Home">
                 <graphic>
                     <FontAwesomeIcon glyphName="HOME" size="1.4em" styleClass="font-awesome-icon" />
@@ -48,11 +52,12 @@
                 </graphic>
             </Button>
 
-            <Button styleClass="my-button2" text="Equipment" >
+            <Button styleClass="my-button2" text="Equipment">
                 <graphic>
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
+
             <Button styleClass="my-button2" text="Bills">
                 <graphic>
                     <FontAwesomeIcon glyphName="TOOLS" size="1.4em" styleClass="font-awesome-icon" />
@@ -102,4 +107,13 @@
             </Button>
         </VBox>
     </AnchorPane>
+
+
+    <Button fx:id="chatButton" styleClass="fab" onAction="#openChatWindow"
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20">
+        <graphic>
+            <FontAwesomeIcon glyphName="COMMENT" size="1.8em" styleClass="font-awesome-icon"/>
+        </graphic>
+    </Button>
+
 </AnchorPane>

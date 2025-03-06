@@ -10,7 +10,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root= FXMLLoader.load(getClass().getResource("/ManageTeam.fxml"));
+        Parent root= FXMLLoader.load(getClass().getResource("/ShowFeedback.fxml"));
 
         Scene scene=new Scene(root);
 

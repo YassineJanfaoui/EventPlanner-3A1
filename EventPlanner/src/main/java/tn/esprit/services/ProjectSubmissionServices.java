@@ -2,7 +2,10 @@ package tn.esprit.services;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import tn.esprit.entities.ProjectSubmission;
 import tn.esprit.utils.MyDatabase;
 
@@ -41,21 +44,27 @@ public class ProjectSubmissionServices implements IService<ProjectSubmission> {
 
 
     @Override
-    public void delete(ProjectSubmission submission) throws SQLException {
-        delete(submission.getSubmissionId());
-    }
-
-    @Override
-    public void delete(int submissionId) throws SQLException {
-        String query = "DELETE FROM projectsubmission WHERE submissionId = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, submissionId);
-            int rowsDeleted = ps.executeUpdate();
+    public void delete(ProjectSubmission submission)  {
+        String query = "DELETE FROM projectsubmission WHERE submissionId=?";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, submission.getSubmissionId());
+            int rowsDeleted = pst.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("project deleted successfully");
+            } else {
+                System.out.println("No project found with the given ID");
+            }
+        } catch (SQLException se) {
+            System.out.println(se.getMessage());
         }
     }
 
+
+
+
     @Override
-    public List<ProjectSubmission> getAll() throws SQLException {
+    public List<ProjectSubmission> returnList() throws SQLException {
         String query = "SELECT * FROM projectsubmission";
         List<ProjectSubmission> submissions = new ArrayList<>();
         try (Statement stmt = con.createStatement();
@@ -72,17 +81,31 @@ public class ProjectSubmissionServices implements IService<ProjectSubmission> {
         }
         return submissions;
     }
-    public List<Integer> getTeamIds() throws SQLException {
+    public int[] TeamIds() throws SQLException {
         List<Integer> teamIds = new ArrayList<>();
-        String query = "SELECT DISTINCT teamId FROM team"; // Fetch from the 'team' table
+        String query = "SELECT teamId FROM team";
+
         try (Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
                 teamIds.add(rs.getInt("teamId"));
             }
         }
-        return teamIds;
+        return teamIds.stream().mapToInt(i -> i).toArray();
     }
 
+    public Map<String, Integer> teamNames() throws SQLException {
+        Map<String, Integer> teamNames = new HashMap<>();
+        String query = "SELECT teamName, teamId FROM team";
 
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                teamNames.put(rs.getString("teamName"), rs.getInt("teamId"));
+            }
+        }
+        return teamNames;
+    }
 }

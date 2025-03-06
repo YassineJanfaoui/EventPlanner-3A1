@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyDatabase {
-    private final String URL = "jdbc:mysql://localhost:3306/test";
+    private final String URL = "jdbc:mysql://localhost:3306/event_planner";
     private final String username = "root";
     private final String pwd = "";
     private Connection conn;
