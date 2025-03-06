@@ -10,19 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.TextArea?>
 <AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.AddParticipantController">
 
-    <VBox layoutX="217.0" layoutY="88.0" prefHeight="465.0" prefWidth="460.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #053536;">
+    <VBox layoutX="217.0" layoutY="56.0" prefHeight="659.0" prefWidth="460.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: #053536;">
 
         <effect>
             <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
         </effect>
-
-        <Label prefHeight="26.0" prefWidth="150.0" text="Participant Details" underline="true">
-            <font>
-                <Font name="Bookman Old Style Bold Italic" size="16.0" />
-            </font>
-        </Label>
 
         <Label text="Name">
             <font>
@@ -44,6 +39,14 @@
             </font>
         </Label>
         <TextField fx:id="Age" promptText="Enter a value" styleClass="input-field" />
+        <AnchorPane fx:id="AIHere" prefHeight="167.0" prefWidth="407.0">
+            <VBox spacing="10" style="-fx-padding: 10px;">
+                <Label text="Enter your skills:" />
+                <TextField fx:id="skillsField" promptText="e.g., Coding, Design, Marketing" />
+                <Button text="Get Event Recommendations" onAction="#handleRecommendEvents" />
+                <TextArea fx:id="recommendationArea" editable="false" prefHeight="100" prefWidth="400" />
+            </VBox>
+        </AnchorPane>
 
         <Label text="Team Name">
             <font>
@@ -59,7 +62,7 @@
         </HBox>
     </VBox>
 
-    <Label layoutX="285.0" layoutY="26.0" prefHeight="50.0" prefWidth="392.0" styleClass="title" text="Update Equipment">
+    <Label layoutX="285.0" layoutY="1.0" prefHeight="50.0" prefWidth="392.0" styleClass="title" text="Add Participant">
         <font>
             <Font name="System Bold Italic" size="36.0" />
         </font>

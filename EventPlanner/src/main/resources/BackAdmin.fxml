@@ -44,6 +44,9 @@
                         <TableColumn fx:id="colStatus" prefWidth="80.0" text="Status" />
                         <TableColumn fx:id="colRole" prefWidth="80.0" text="Role" />
                         <TableColumn fx:id="colDelete" minWidth="30" prefWidth="68.0" text="Delete" />
+                         <TableColumn fx:id="colEnable" prefWidth="68.0" text="Enable" />
+                         <TableColumn fx:id="colDisable" prefWidth="68.0" text="Disable" />
+                         <TableColumn fx:id="colBan" prefWidth="68.0" text="Ban" />
                      </columns>
                   </TableView>
                   <Button fx:id="AddAdmin" onAction="#NavigateToAddAdmin" style="-fx-font-size: 14px; -fx-background-color: B0A295; -fx-text-fill: white;" text="Add Admin" />

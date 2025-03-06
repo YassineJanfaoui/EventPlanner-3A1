@@ -16,6 +16,7 @@ import tn.esprit.services.UserService;
 import tn.esprit.entities.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class SignUpController {
 
@@ -52,7 +53,7 @@ public class SignUpController {
     }
 
     @FXML
-    void Submit(ActionEvent event) {
+    void Submit(ActionEvent event) throws SQLException {
         // Collect data from input fields
         String username = UserName.getText();
         String password = pwd.getText();
@@ -92,7 +93,7 @@ public class SignUpController {
         User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.valueOf(role));
 
         // Use UserService to create the user
-        userService.addp(newUser);
+        userService.addP(newUser);
 
         // Show success message
         showAlert("Success", "User created successfully.");

@@ -25,6 +25,9 @@ public class Participant {
         this.teamid = eventId;
     }
 
+    public Participant() {
+    }
+
     // Getters and Setters
     public int getParticipantId() {
         return participantId;

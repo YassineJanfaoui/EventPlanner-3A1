@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -41,8 +42,13 @@
                     </TableColumn>
                 </columns>
             </TableView>
-
-            <Button fx:id="addButton" onAction="#navigateToAddParticipant" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add Participant" />
+         <AnchorPane prefHeight="51.0" prefWidth="567.0">
+            <children>
+               <Button fx:id="PDF" layoutX="226.0" layoutY="5.0" onAction="#PDF" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="PDF" />
+               <Button fx:id="addButton" layoutX="24.0" layoutY="5.0" onAction="#navigateToAddParticipant" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add Participant" />
+               <ComboBox fx:id="EventName" layoutX="293.0" layoutY="7.0" prefWidth="150.0" />
+            </children>
+         </AnchorPane>
         </children>
     </VBox>
     <AnchorPane>

@@ -1,0 +1,15 @@
+.row-admin {
+    -fx-background-color: #ffcccc; /* Light red for admin */
+}
+
+.row-event-planner {
+    -fx-background-color: #ccffcc; /* Light green for event planner */
+}
+
+.row-team-leader {
+    -fx-background-color: #ccccff; /* Light blue for team leader */
+}
+
+.row-simple-user {
+    -fx-background-color: #ffffcc; /* Light yellow for simple user */
+}

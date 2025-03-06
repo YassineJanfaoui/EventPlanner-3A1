@@ -1,5 +1,6 @@
 package tn.esprit.controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,17 +8,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import tn.esprit.api.PDF_Participant;
 import tn.esprit.entities.*;
 import tn.esprit.services.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.MapValueFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 public class ShowParticipantController {
 
@@ -48,7 +49,10 @@ public class ShowParticipantController {
     private final ParticipantService participantService = new ParticipantService();
 
     @FXML
-    void initialize() {
+    private ComboBox<String> EventName; // Change the type to String
+
+    @FXML
+    void initialize() throws SQLException {
         // Fetch data from the service
         ObservableList<Participant> observableList = FXCollections.observableList(participantService.returnList());
         ParticipantTable.setItems(observableList);
@@ -71,6 +75,22 @@ public class ShowParticipantController {
 
         // Set up buttons for update and delete
         setUpButtons();
+
+        // Populate the EventName ComboBox with event names
+        List<String> eventNames = participantService.getAllEventNames(); // Assuming you have a method to get all event names
+        EventName.setItems(FXCollections.observableArrayList(eventNames));
+
+        ParticipantTable.setRowFactory(tv -> {
+            TableRow<Participant> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Participant selectedParticipant = row.getItem();
+                    showQRCodePopup(selectedParticipant);
+                }
+            });
+
+            return row;
+        });
     }
 
     private void setUpButtons() {
@@ -104,7 +124,11 @@ public class ShowParticipantController {
             {
                 deleteButton.setOnAction(event -> {
                     Participant participant = getTableView().getItems().get(getIndex());
-                    handleDeleteButtonClick(participant);
+                    try {
+                        handleDeleteButtonClick(participant);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
 
@@ -120,17 +144,32 @@ public class ShowParticipantController {
         });
     }
 
-    private void handleDeleteButtonClick(Participant participant) {
+    private void handleDeleteButtonClick(Participant participant) throws SQLException {
         System.out.println("Delete participant: " + participant);
         participantService.delete(participant);
         refreshTable();
     }
 
-    private void refreshTable() {
+    private void refreshTable() throws SQLException {
         ObservableList<Participant> updatedList = FXCollections.observableList(participantService.returnList());
         ParticipantTable.setItems(updatedList);
     }
+    private void showQRCodePopup(Participant p) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/QRCodeParticipant.fxml"));
+            Parent root = loader.load();
 
+            QRcodeParticipantController controller = loader.getController();
+            controller.setParticipantData(p);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("participant QR Code");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     public void navigateToAddParticipant(ActionEvent event) {
         try {
@@ -161,5 +200,29 @@ public class ShowParticipantController {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+    @FXML
+    void PDF(ActionEvent event) {
+        String selectedEventName = EventName.getSelectionModel().getSelectedItem();
+
+        if (selectedEventName == null || selectedEventName.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Event Selected");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select an event from the dropdown.");
+            alert.showAndWait();
+            return;
+        }
+
+        PDF_Participant pdfExporter = new PDF_Participant();
+        pdfExporter.exportParticipantsToPDF(selectedEventName);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("PDF Export");
+        alert.setHeaderText(null);
+        alert.setContentText("PDF exported successfully to your Desktop.");
+        alert.showAndWait();
     }
 }

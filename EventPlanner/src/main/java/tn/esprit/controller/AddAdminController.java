@@ -16,6 +16,7 @@ import tn.esprit.entities.User;
 import tn.esprit.services.UserService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AddAdminController {
 
@@ -42,7 +43,7 @@ public class AddAdminController {
     private UserService userService = new UserService();
 
     @FXML
-    void Submit(ActionEvent event) {
+    void Submit(ActionEvent event) throws SQLException {
         // Collect data from input fields
         String username = UserName.getText();
         String password = pwd.getText();
@@ -82,7 +83,7 @@ public class AddAdminController {
         User newUser = new User(username, password, email, name, phoneNumber, Status.ACTIVE, Role.ADMIN);
 
         // Use UserService to create the user
-        userService.addp(newUser);
+        userService.addP(newUser);
 
         // Show success message
         showAlert("Success", "Admin created successfully.");

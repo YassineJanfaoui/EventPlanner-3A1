@@ -11,7 +11,7 @@ import java.util.List;
 public class UserService implements IService<User> {
     Connection con = MyDataBase.getInstance().getConnection();
     @Override
-    public void addp(User u) {
+    public void addP(User u) throws SQLException {
         try {
             // Insert into the user table
             String query = "INSERT INTO user(username, password, email, name, phoneNumber, status, role) VALUES (?,?,?,?,?,?,?)";
@@ -44,7 +44,7 @@ public class UserService implements IService<User> {
 
 
     @Override
-    public List<User> returnList() {
+    public List<User> returnList()  {
         List<User> list = new ArrayList<>();
         try {
             String query = "SELECT * FROM user";
@@ -167,4 +167,52 @@ public class UserService implements IService<User> {
         }
 
         return user;
-    }}
+    }
+
+
+    public User getUserByEmail(String email) {
+        User user = null;
+
+        try {
+            String req = "SELECT * FROM user WHERE Email = ?";
+            PreparedStatement psmt = con.prepareStatement(req);
+            psmt.setString(1, email);
+            ResultSet rs = psmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getInt("userId"));
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("Password"));
+                user.setEmail(rs.getString("Email"));
+                user.setName(rs.getString("Name"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+
+                // Convert String to Status enum
+                String statusStr = rs.getString("Status");
+                Status status = Status.valueOf(statusStr); // Convert String to Status enum
+                user.setStatus(status);
+
+                // Convert String to Role enum
+                String roleStr = rs.getString("Role");
+                Role role = Role.valueOf(roleStr); // Convert String to Role enum
+                user.setRole(role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // Handle case where the database value does not match any enum constant
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+
+}
+
+
+
+
+
+

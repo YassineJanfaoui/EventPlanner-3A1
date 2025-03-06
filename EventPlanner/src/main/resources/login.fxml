@@ -40,7 +40,7 @@
         </AnchorPane>
 
         <!-- Forgot Password Link (Updated color) -->
-        <Label styleClass="forgot-password-link" text="Forgot Password?" />
+        <Label fx:id="forgetpassword" onMouseClicked="#forgetpassword" styleClass="forgot-password-link" text="Forgot Password?" />
 
         <!-- Login Button -->
         <Button fx:id="loginBtn" onAction="#Submit" styleClass="login-button" text="Login" />

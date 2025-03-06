@@ -9,10 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import tn.esprit.api.*;
 import tn.esprit.entities.*;
 import tn.esprit.services.UserService;
-
+import tn.esprit.api.mailerActivate;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class ShowUsersController {
@@ -47,7 +49,12 @@ public class ShowUsersController {
     private TableColumn<User, String> colStatus;
     @FXML
     private TableColumn<User, Void> colDelete;
-
+    @FXML
+    private TableColumn<User, Void> colEnable;
+    @FXML
+    private TableColumn<User, Void> colDisable;
+    @FXML
+    private TableColumn<User, Void> colBan;
 
     private UserService userService;
 
@@ -57,6 +64,15 @@ public class ShowUsersController {
 
     @FXML
     public void initialize() {
+        // Debugging: Check if the CSS file exists
+        URL cssResource = getClass().getResource("/ShowUserStyle.css");
+        if (cssResource == null) {
+            System.err.println("CSS file not found! Ensure it is in the correct location.");
+        } else {
+            System.out.println("CSS file found: " + cssResource.toExternalForm());
+            UsersTable.getStylesheets().add(cssResource.toExternalForm());
+        }
+
         // Initialize the columns
         colId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -70,6 +86,37 @@ public class ShowUsersController {
         // Load the users into the table
         loadUsers();
         setUpButtons();
+
+        // Set up row factory for coloring rows
+        UsersTable.setRowFactory(tv -> new TableRow<User>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+
+                if (empty || user == null) {
+                    setStyle(""); // Clear style if the row is empty
+                } else {
+                    // Apply style based on user role
+                    switch (user.getRole()) {
+                        case ADMIN:
+                            getStyleClass().setAll("row-admin");
+                            break;
+                        case EVENT_PLANNER:
+                            getStyleClass().setAll("row-event-planner");
+                            break;
+                        case TEAM_LEADER:
+                            getStyleClass().setAll("row-team-leader");
+                            break;
+                        case SIMPLE_USER:
+                            getStyleClass().setAll("row-simple-user");
+                            break;
+                        default:
+                            getStyleClass().clear(); // Clear style if role is unknown
+                            break;
+                    }
+                }
+            }
+        });
 
         // Set up row factory for double-click action
         UsersTable.setRowFactory(tv -> {
@@ -104,8 +151,7 @@ public class ShowUsersController {
             });
             return row;
         });
-    }
-    public void loadUsers() {
+    }    public void loadUsers() {
         List<User> users = userService.returnList();
         UsersTable.getItems().setAll(users);
     }
@@ -131,7 +177,100 @@ public class ShowUsersController {
                 }
             }
         });
+
+        // Enable Button
+        colEnable.setCellFactory(param -> new TableCell<User, Void>() {
+            private final Button enableButton = new Button("Enable");
+
+            {
+                enableButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.ACTIVE);
+                    mailerActivate.sendEmail(user);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    User user = getTableView().getItems().get(getIndex());
+                    if (user.getRole() == Role.ADMIN) {
+                        setGraphic(null); // Hide button for admins
+                    } else {
+                        setGraphic(enableButton);
+                    }
+                }
+            }
+        });
+
+        // Disable Button
+        colDisable.setCellFactory(param -> new TableCell<User, Void>() {
+            private final Button disableButton = new Button("Disable");
+
+            {
+                disableButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.INACTIVE);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    User user = getTableView().getItems().get(getIndex());
+                    if (user.getRole() == Role.ADMIN) {
+                        setGraphic(null); // Hide button for admins
+                    } else {
+                        setGraphic(disableButton);
+                    }
+                }
+            }
+        });
+
+        // Ban Button
+        colBan.setCellFactory(param -> new TableCell<User, Void>() {
+            private final Button banButton = new Button("Ban");
+
+            {
+                banButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.BANNED);
+                    MailerBan.sendEmail(user);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    User user = getTableView().getItems().get(getIndex());
+                    if (user.getRole() == Role.ADMIN) {
+                        setGraphic(null); // Hide button for admins
+                    } else {
+                        setGraphic(banButton);
+                    }
+                }
+            }
+        });
     }
+    private void handleStatusUpdate(User user, Status newStatus) {
+        if (user.getRole() == Role.ADMIN) {
+            showAlert("Action Denied", "Admins cannot be modified.");
+            return;
+        }
+        user.setStatus(newStatus);
+        userService.update(user); // Ensure UserService has an update method
+        loadUsers(); // Refresh the table
+    }
+
     private void handleDeleteButtonClick(User user) {
         System.out.println("Delete user: " + user);
         UserService userService = new UserService();

@@ -29,6 +29,9 @@
                     <TableColumn fx:id="colDelete" prefWidth="68.0" text="Delete">
                         <minWidth>30</minWidth>
                     </TableColumn>
+                    <TableColumn fx:id="colEnable" prefWidth="68.0" text="Enable" />
+                    <TableColumn fx:id="colDisable" prefWidth="68.0" text="Disable" />
+                    <TableColumn fx:id="colBan" prefWidth="68.0" text="Ban" />
                 </columns>
             </TableView>
 
