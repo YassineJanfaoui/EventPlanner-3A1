@@ -25,7 +25,8 @@ public class Team {
     public Team() {
     }
 
-
+    public Team(int id, String teamName, int eventId) {
+    }
 
 
     public int getId() {
@@ -78,5 +79,4 @@ public class Team {
                 ", eventId=" + eventId +
                 '}';
     }
-
 }

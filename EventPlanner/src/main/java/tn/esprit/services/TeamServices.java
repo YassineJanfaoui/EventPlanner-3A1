@@ -7,7 +7,9 @@ import tn.esprit.entities.Team;
 import tn.esprit.utils.MyDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TeamServices implements IService<Team> {
 
@@ -15,6 +17,9 @@ public class TeamServices implements IService<Team> {
 
     public TeamServices() {
         con = MyDatabase.getInstance().getConnection();
+    }
+
+    public TeamServices(int id, String teamName, Integer eventId) {
     }
 
     @Override
@@ -41,12 +46,13 @@ public class TeamServices implements IService<Team> {
 
     }
 
+
     @Override
     public void update(Team team)  {
-        String query = "UPDATE team SET TeamName = ?, Score = ?, Rank = ? WHERE teamid = ?";
-        PreparedStatement ps = null;
+
         try {
-            ps = con.prepareStatement(query);
+            String query = "UPDATE team SET TeamName = ?, Score = ?, Rank = ? WHERE teamid = ?";
+            PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, team.getTeamName());
             ps.setInt(2,team.getScore() );
             ps.setInt(3,team.getRank() );
@@ -60,25 +66,22 @@ public class TeamServices implements IService<Team> {
     }
 
     @Override
-    public void delete(Team team)  {
-
-        String query = "DELETE FROM team WHERE teamid = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            int teamid = team.getId();
-            ps.setInt(1, teamid);
-            int rowsDeleted = ps.executeUpdate();} catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void delete(Team team) {
+        String query = "DELETE FROM team WHERE teamid=?";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, team.getId());
+            int rowsDeleted = pst.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("team deleted successfully");
+            } else {
+                System.out.println("No team found with the given ID");
+            }
+        } catch (SQLException se) {
+            System.out.println(se.getMessage());
         }
-
     }
 
-//    @Override
-//    public void delete(int teamId) throws SQLException {
-//        String query = "DELETE FROM team WHERE teamid = ?";
-//        try (PreparedStatement ps = con.prepareStatement(query)) {
-//            ps.setInt(1, teamId);
-//            int rowsDeleted = ps.executeUpdate();}
-//    }
 
     @Override
     public List<Team> returnList() throws SQLException {
@@ -116,7 +119,52 @@ public class TeamServices implements IService<Team> {
         }
         return teamIds;
     }
+    public Map<String, Integer> teamNames() throws SQLException {
+        Map<String, Integer> teamNames = new HashMap<>();
+        String query = "SELECT teamName, teamId FROM team";
 
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                teamNames.put(rs.getString("teamName"), rs.getInt("teamId"));
+            }
+        }
+        return teamNames;
+    }
+
+
+    public Map<String, Integer> eventNames() throws SQLException {
+        Map<String, Integer> eventNames = new HashMap<>();
+        String query = "SELECT name, eventId FROM event";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                eventNames.put(rs.getString("name"), rs.getInt("eventId"));
+            }
+        }
+        return eventNames;
+    }
+    public List<Team> getLeaderboard() throws SQLException {
+        List<Team> teams = new ArrayList<>();
+        String query = "SELECT * FROM team ORDER BY Score DESC";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                teams.add(new Team(
+                        rs.getInt("teamid"),
+                        rs.getString("TeamName"),
+                        rs.getInt("Score"),
+                        rs.getInt("Rank"),
+                        rs.getInt("eventId")
+                ));
+            }
+        }
+        return teams;
+    }
 
 
 

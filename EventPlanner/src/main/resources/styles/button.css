@@ -145,3 +145,44 @@
 .table-cell {
     -fx-alignment: CENTER;
 }
+.sentiment-label {
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 5px;
+}
+
+.positive {
+    -fx-text-fill: #2ecc71;
+    -fx-background-color: #e8f6f3;
+}
+
+.negative {
+    -fx-text-fill: #e74c3c;
+    -fx-background-color: #f9ebea;
+}
+
+.neutral {
+    -fx-text-fill: #f1c40f;
+    -fx-background-color: #fcf3cf;
+}
+.fab {
+    -fx-background-radius: 50%;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-background-color: #2196F3; /* Blue */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+.fab:hover {
+    -fx-background-color: #1976D2; /* Darker Blue */
+}
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+    -fx-prompt-text-fill: #757575;
+}
+
+.text-field:focused {
+    -fx-border-color: #1976D2;
+}

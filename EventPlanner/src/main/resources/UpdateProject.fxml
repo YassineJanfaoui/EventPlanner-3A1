@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.collections.FXCollections?>
+<AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.UpdateProjectController">
+
+    <VBox layoutX="203.0" layoutY="70.0" prefHeight="465.0" prefWidth="460.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-color: #053536;">
+        <effect>
+            <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
+        </effect>
+
+        <Label text="Project Title" />
+        <TextField fx:id="titleField" promptText="Enter project title" styleClass="input-field" />
+
+        <Label text="File Link" />
+        <TextField fx:id="fileLinkField" promptText="Enter file link" styleClass="input-field" />
+
+        <Label text="Submission Date" />
+        <DatePicker fx:id="submissionDatePicker" styleClass="input-field" />
+
+        <Label text="Team Name" />
+        <ComboBox fx:id="teamIdComboBox" minWidth="400" styleClass="input-field">
+            <items>
+                <FXCollections fx:factory="observableArrayList"/>
+            </items>
+        </ComboBox>
+
+        <HBox>
+            <Button mnemonicParsing="false" onAction="#handleUpdateProject" prefWidth="205.0" styleClass="my-button" text="Update Project" />
+            <Button mnemonicParsing="false" onAction="#navigateToShowProjects" prefWidth="203.0" styleClass="my-button" text="Back to list" />
+        </HBox>
+    </VBox>
+    <AnchorPane prefHeight="678.0" prefWidth="140.0">
+        <fx:include source="Sidebar.fxml" />
+    </AnchorPane>
+</AnchorPane>
+

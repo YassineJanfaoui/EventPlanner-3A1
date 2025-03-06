@@ -92,16 +92,22 @@
                     <FontAwesomeIcon glyphName="UTENSILS" size="1.4em" styleClass="font-awesome-icon" />
                 </graphic>
             </Button>
-         <Button fx:id="EditProfile" onAction="#NavigateToEditProfile" styleClass="my-button2" text="Edit Profile">
-            <graphic>
-               <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
-            </graphic>
-         </Button>
-         <Button fx:id="LogOut" onAction="#NavigateToLogIn" styleClass="my-button2" text="Log Out">
-            <graphic>
-               <FontAwesomeIcon glyphName="SIGN_OUT" size="1.4em" styleClass="font-awesome-icon" />
-            </graphic>
-         </Button>
+            <Button fx:id="EditProfile" onAction="#NavigateToEditProfile" styleClass="my-button2" text="Edit Profile">
+                <graphic>
+                    <FontAwesomeIcon glyphName="USER" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
+            <Button fx:id="LogOut" onAction="#NavigateToLogIn" styleClass="my-button2" text="Log Out">
+                <graphic>
+                    <FontAwesomeIcon glyphName="SIGN_OUT" size="1.4em" styleClass="font-awesome-icon" />
+                </graphic>
+            </Button>
         </VBox>
     </AnchorPane>
+    <Button fx:id="chatButton" styleClass="fab" onAction="#openChatWindow"
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20">
+        <graphic>
+            <FontAwesomeIcon glyphName="COMMENT" size="1.8em" styleClass="font-awesome-icon"/>
+        </graphic>
+    </Button>
 </AnchorPane>
