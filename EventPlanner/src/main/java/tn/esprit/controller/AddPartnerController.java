@@ -27,25 +27,37 @@ public class AddPartnerController {
         // Initialization if needed
     }
 
+
     @FXML
     private void handleAddPartner() {
         try {
             String partnerName = partner_name.getText().trim();
-            String Category = category.getText().trim();
+            String categoryName = category.getText().trim();
 
-            if (partnerName.isEmpty() || Category.isEmpty()) {
+            if (partnerName.isEmpty() || categoryName.isEmpty()) {
                 showAlert("Error", "Partner Name and Category are required!");
+                return;
+            }
+
+            // Validate that partnerName and category only contain letters and spaces
+            if (!partnerName.matches("[a-zA-Z\\s]+")) {
+                showAlert("Error", "Partner Name must only contain letters and spaces!");
+                return;
+            }
+
+            if (!categoryName.matches("[a-zA-Z\\s]+")) {
+                showAlert("Error", "Category must only contain letters and spaces!");
                 return;
             }
 
             Partner partner = new Partner();
             partner.setName(partnerName);
-            partner.setCategory(Category);
+            partner.setCategory(categoryName);
 
             partnerService.addP(partner);
 
             showAlert("Success", "Partner added successfully!");
-            clearForm();
+
 
         } catch (SQLException e) {
             showAlert("Database Error", "Failed to add partner: " + e.getMessage());
@@ -53,6 +65,7 @@ public class AddPartnerController {
             showAlert("Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
+
 
 
     private void clearForm() {

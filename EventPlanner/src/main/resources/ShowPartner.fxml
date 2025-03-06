@@ -22,6 +22,12 @@
                 </columns>
             </TableView>
             <Button fx:id="addButton" onAction="#navigateToAddPartner" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add Partner" />
+            <Button fx:id="showStatsButton"
+                    layoutX="300.0" layoutY="500.0"
+                    text="Show Category Statistics"
+                    onAction="#showCategoryStatistics"
+                    style="-fx-background-color: #3E64FF; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;"/>
+
         </children>
     </VBox>
     <AnchorPane>

@@ -20,7 +20,7 @@ public class WorkshopServices implements IService<Workshop> {
 
     @Override
     public void addP(Workshop w) throws SQLException {
-        String query = "INSERT INTO workshop (`title`, `coach`, `duration`, `startDate`, `description`, `partnerId`) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO workshop (title, coach, duration, startDate, description, partnerId) VALUES (?,?,?,?,?,?)";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, w.getTitle());
         pst.setString(2, w.getCoach());
@@ -93,16 +93,7 @@ public class WorkshopServices implements IService<Workshop> {
             System.out.println(se.getMessage());
         }
     }
-//    public int[] getPartnerIDs() throws SQLException {
-//        String query = "SELECT partnerId FROM partner";
-//        Statement st = con.createStatement();
-//        ResultSet rs = st.executeQuery(query);
-//        List<Integer> eventIDsList = new ArrayList<>();
-//        while (rs.next()) {
-//            eventIDsList.add(rs.getInt("partnerId"));
-//        }
-//        return eventIDsList.stream().mapToInt(i -> i).toArray();
-//    }
+
 
     public List<Integer> getPartnerIDs() throws SQLException {
         String query = "SELECT partnerId FROM partner";
