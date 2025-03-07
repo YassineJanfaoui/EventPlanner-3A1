@@ -15,6 +15,8 @@ import tn.esprit.services.VenueServices;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddCateringController {
 
@@ -28,11 +30,15 @@ public class AddCateringController {
     private ComboBox<String> mealScheduleComboBox;
     @FXML
     private ComboBox<String> beveragesComboBox;
+    /*@FXML
+    private ComboBox<Integer> venueIdComboBox;*/
     @FXML
-    private ComboBox<Integer> venueIdComboBox;
-
     private final CateringServices cateringService = new CateringServices();
     private final VenueServices venueService = new VenueServices();
+    @FXML
+    private ComboBox<String> venueNameComboBox; // Store Venue Names instead of IDs
+    private Map<String, Integer> venueMap = new HashMap<>(); // Map Venue Names to IDs
+
 
     public AddCateringController() throws SQLException {
     }
@@ -61,19 +67,20 @@ public class AddCateringController {
         beveragesComboBox.setItems(beverageOptions);
         beveragesComboBox.getSelectionModel().selectFirst();
 
-        // Fetch available venue IDs dynamically
+        // Fetch available venue names dynamically
         try {
-            int[] venueIDs = venueService.venueIDs();
-            ObservableList<Integer> venueIdList = FXCollections.observableArrayList();
-            for (int id : venueIDs) {
-                venueIdList.add(id);
-            }
-            venueIdComboBox.setItems(venueIdList);
-            if (!venueIdList.isEmpty()) {
-                venueIdComboBox.getSelectionModel().selectFirst();
+            VenueServices venueService = new VenueServices();
+            Map<String, Integer> venues = venueService.getVenueNameToIdMap(); // Get venue name-ID mapping
+
+            venueMap.putAll(venues); // Store mapping for later use
+            ObservableList<String> venueNames = FXCollections.observableArrayList(venues.keySet());
+
+            venueNameComboBox.setItems(venueNames);
+            if (!venueNames.isEmpty()) {
+                venueNameComboBox.getSelectionModel().selectFirst();
             }
         } catch (Exception e) {
-            System.out.println("Error fetching venue IDs: " + e.getMessage());
+            System.out.println("Error fetching venue names: " + e.getMessage());
         }
     }
 
@@ -85,7 +92,13 @@ public class AddCateringController {
             String beverages = beveragesComboBox.getValue();
             String nbrPlatesText = nbrPlatesField.getText().trim();
             String pricingText = pricingField.getText().trim();
-            Integer venueId = venueIdComboBox.getValue();
+            //Integer venueId = venueIdComboBox.getValue();
+            String venueName = venueNameComboBox.getValue();
+            Integer venueId = venueMap.get(venueName); // Get Venue ID from Venue Name
+            if (venueId == null) {
+                showAlert(Alert.AlertType.ERROR, "Form Error", "Please select a valid venue.");
+                return;
+            }
 
             System.out.println("Debug: Selected MenuType = " + menuType);
             System.out.println("Debug: ComboBox Items = " + menuTypeComboBox.getItems());

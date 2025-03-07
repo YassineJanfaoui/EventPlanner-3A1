@@ -66,9 +66,12 @@
             </items>
         </ComboBox>
 
-        <Label text="Venue ID" />
-        <ComboBox fx:id="venueIdComboBox" minWidth="400" prefWidth="400.0" styleClass="input-field">
-            <!-- This ComboBox should be populated dynamically with available Venue IDs from the database -->
+        <Label text="Venue Name" />
+        <ComboBox fx:id="venueNameComboBox" minWidth="400" prefWidth="400.0" promptText="Select Venue" styleClass="input-field">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                </FXCollections>
+            </items>
         </ComboBox>
 
         <HBox>

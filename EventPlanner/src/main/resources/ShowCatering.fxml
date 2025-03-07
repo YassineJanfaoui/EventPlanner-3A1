@@ -9,12 +9,53 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane prefHeight="550.0" prefWidth="794.0" style="-fx-background-color: #F1F2F6;" stylesheets="@styles/button.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ShowCateringController">
 
     <VBox layoutX="143.0" layoutY="110.0" prefHeight="512.0" prefWidth="1126.0" spacing="15.0" style="-fx-padding: 25px; -fx-background-color: white; -fx-border-color: #053536;">
         <effect>
             <DropShadow color="#888888" offsetX="5.0" offsetY="5.0" radius="15.0" />
         </effect>
+        <HBox spacing="15">
+            <ComboBox fx:id="menuTypeFilter" promptText="Filter by Menu Type" minWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="All" />
+                        <String fx:value="Normal" />
+                        <String fx:value="Vegan" />
+                        <String fx:value="Vegetarian" />
+                        <String fx:value="Gluten Free" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <ComboBox fx:id="mealScheduleFilter" promptText="Filter by Meal Schedule" minWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="All" />
+                        <String fx:value="Breakfast" />
+                        <String fx:value="Lunch" />
+                        <String fx:value="Dinner" />
+                        <String fx:value="Snacks" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <ComboBox fx:id="priceSortOrder" promptText="Sort by Price" minWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Ascending" />
+                        <String fx:value="Descending" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Button fx:id="applyFiltersButton" text="Apply Filters" onAction="#handleApplyFilters" />
+        </HBox>
+
         <children>
             <TableView fx:id="cateringTable" prefHeight="416.0" prefWidth="1013.0">
                 <columns>
