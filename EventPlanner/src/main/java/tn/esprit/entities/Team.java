@@ -22,6 +22,11 @@ public class Team {
         this.eventId = eventId;
     }
 
+    public Team(int teamid, String teamName) {
+        this.teamid = teamid;
+        TeamName = teamName;
+    }
+
     public Team() {
     }
 

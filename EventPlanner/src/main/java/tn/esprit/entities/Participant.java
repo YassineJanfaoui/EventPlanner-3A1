@@ -7,7 +7,7 @@ public class Participant {
     private String name;
     private String affiliation;
     private int age;
-    private int teamid; // Foreign key reference to Event
+    private int teamid;
 
     // Constructors
     public Participant(int participantId, String name, String affiliation, int age, int eventId) {
@@ -23,6 +23,9 @@ public class Participant {
         this.affiliation = affiliation;
         this.age = age;
         this.teamid = eventId;
+    }
+
+    public Participant() {
     }
 
     // Getters and Setters

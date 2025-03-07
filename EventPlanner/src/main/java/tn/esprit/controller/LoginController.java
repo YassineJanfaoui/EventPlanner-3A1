@@ -10,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import tn.esprit.entities.LoggedInUser;
+import tn.esprit.entities.Status;
 import tn.esprit.services.UserService;
 import tn.esprit.entities.User;
 
@@ -48,7 +49,7 @@ public class LoginController {
         User user = userService.getUserByEmailAndPass(email, password);
 
         if (user != null) {
-            // Authentication successful
+           /* // Authentication successful
             showAlert(AlertType.INFORMATION, "Login Successful", "Welcome, " + user.getName() + "!");
 
             LoggedInUser.getInstance().setLoggedInUser(user);
@@ -57,6 +58,25 @@ public class LoginController {
             }
             else {
                 navigateToHome();
+            }*/
+            if(user.getStatus() == Status.ACTIVE)
+            {
+                showAlert(AlertType.INFORMATION, "Login Successful", "Welcome, " + user.getName() + "!");
+
+                LoggedInUser.getInstance().setLoggedInUser(user);
+                if(user.getRole().toString().equals("ADMIN")){
+                    navigateToBackAdmin();
+                }
+                else {
+                    navigateToHome();
+                }
+            }
+            else if(user.getStatus() == Status.INACTIVE) {
+                showAlert(AlertType.ERROR, "Login Unsuccessful", "You can't log in until the activation of your account by the ADMIN.");
+            }
+            else
+            {
+                showAlert(AlertType.ERROR, "Login Unsuccessful", "Your account has been BANNED !!.");
             }
         } else {
             // Authentication failed
@@ -129,6 +149,24 @@ public class LoginController {
         } catch (NullPointerException e) {
             e.printStackTrace();
             showAlert(AlertType.ERROR, "Navigation Error", "The SignUpView.fxml file was not found. Please check the file path.");
+        }
+    }
+
+
+    @FXML
+    void forgetpassword(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ForgetPassword.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from the button (if applicable)
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("ForgetPassword");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if the FXML loading fails
         }
     }
 }

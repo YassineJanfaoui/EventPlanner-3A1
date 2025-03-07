@@ -16,6 +16,7 @@ import tn.esprit.entities.User;
 import tn.esprit.services.UserService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AddAdminController {
 
@@ -42,7 +43,7 @@ public class AddAdminController {
     private UserService userService = new UserService();
 
     @FXML
-    void Submit(ActionEvent event) {
+    void Submit(ActionEvent event) throws SQLException {
         // Collect data from input fields
         String username = UserName.getText();
         String password = pwd.getText();
@@ -134,14 +135,12 @@ public class AddAdminController {
     }
     void NavigateToAddAdmin() {
         try {
-            // Load the home.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/BackAdmin.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (window)
             Stage stage = (Stage) AddAdmin.getScene().getWindow();
 
-            // Set the new scene with the home.fxml content
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

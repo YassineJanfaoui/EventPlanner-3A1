@@ -9,47 +9,36 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import tn.esprit.entities.*;
+import tn.esprit.api.mailerActivate;
+import tn.esprit.entities.Role;
+import tn.esprit.entities.Status;
+import tn.esprit.entities.User;
 import tn.esprit.services.UserService;
-
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowUsersController {
 
     @FXML
-    private Button AddAdmin;
+    private Button AddAdmin, searchButton;
 
     @FXML
     private TableView<User> UsersTable;
 
     @FXML
-    private TableColumn<User, String> colEmail;
-
-    @FXML
-    private TableColumn<User, String> colFullName;
-
+    private TableColumn<User, String> colEmail, colFullName, colName, colPhoneNumber, colPwd, colRole, colStatus;
     @FXML
     private TableColumn<User, Integer> colId;
+    @FXML
+    private TableColumn<User, Void> colDelete, colEnable, colDisable, colBan;
 
     @FXML
-    private TableColumn<User, String> colName;
-
-    @FXML
-    private TableColumn<User, String> colPhoneNumber;
-
-    @FXML
-    private TableColumn<User, String> colPwd;
-
-    @FXML
-    private TableColumn<User, String> colRole;
-    @FXML
-    private TableColumn<User, String> colStatus;
-    @FXML
-    private TableColumn<User, Void> colDelete;
-
+    private TextField searchField;
 
     private UserService userService;
+    private List<User> allUsers; // Store all users for filtering
 
     public ShowUsersController() {
         userService = new UserService();
@@ -57,7 +46,12 @@ public class ShowUsersController {
 
     @FXML
     public void initialize() {
-        // Initialize the columns
+        URL cssResource = getClass().getResource("/ShowUserStyle.css");
+        if (cssResource != null) {
+            UsersTable.getStylesheets().add(cssResource.toExternalForm());
+        }
+
+        // Initialize columns
         colId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("username"));
         colFullName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -67,51 +61,30 @@ public class ShowUsersController {
         colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Load the users into the table
         loadUsers();
         setUpButtons();
-
-        // Set up row factory for double-click action
-        UsersTable.setRowFactory(tv -> {
-            TableRow<User> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    SelectedUser.getInstance().setSelectedUser(row.getItem());
-                    System.out.println(SelectedUser.getInstance().getSelectedUserr());
-
-                    try {
-                        // Load the UserDetails.fxml file
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDetails.fxml"));
-                        Parent root = loader.load();
-
-                        // Create a new stage for the UserDetails window
-                        Stage userDetailsStage = new Stage();
-                        userDetailsStage.setTitle("User Details");
-                        userDetailsStage.setScene(new Scene(root));
-                        userDetailsStage.initModality(Modality.APPLICATION_MODAL);
-
-                        // Get the current stage (window) and close it
-                        Stage currentStage = (Stage) UsersTable.getScene().getWindow();
-                        currentStage.close();
-
-                        // Show the UserDetails window
-                        userDetailsStage.showAndWait();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            return row;
-        });
     }
-    public void loadUsers() {
-        List<User> users = userService.returnList();
-        UsersTable.getItems().setAll(users);
+
+    private void loadUsers() {
+        allUsers = userService.returnList();
+        UsersTable.getItems().setAll(allUsers);
     }
+
+    @FXML
+    private void searchUsersByName() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (searchText.isEmpty()) {
+            UsersTable.getItems().setAll(allUsers);
+        } else {
+            List<User> filteredUsers = allUsers.stream()
+                    .filter(user -> user.getUsername().toLowerCase().contains(searchText))
+                    .collect(Collectors.toList());
+            UsersTable.getItems().setAll(filteredUsers);
+        }
+    }
+
     private void setUpButtons() {
-        // Delete Button
-        colDelete.setCellFactory(param -> new TableCell<User, Void>() {
+        colDelete.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
             {
@@ -124,57 +97,115 @@ public class ShowUsersController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
+                setGraphic(empty ? null : deleteButton);
+            }
+        });
+
+        colEnable.setCellFactory(param -> new TableCell<>() {
+            private final Button enableButton = new Button("Enable");
+
+            {
+                enableButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.ACTIVE);
+                    mailerActivate.sendEmail(user);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    User user = getTableView().getItems().get(getIndex());
+                    setGraphic(user.getRole() == Role.ADMIN ? null : enableButton);
                 } else {
-                    setGraphic(deleteButton);
+                    setGraphic(null);
+                }
+            }
+        });
+
+        colDisable.setCellFactory(param -> new TableCell<>() {
+            private final Button disableButton = new Button("Disable");
+
+            {
+                disableButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.INACTIVE);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    User user = getTableView().getItems().get(getIndex());
+                    setGraphic(user.getRole() == Role.ADMIN ? null : disableButton);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+
+        colBan.setCellFactory(param -> new TableCell<>() {
+            private final Button banButton = new Button("Ban");
+
+            {
+                banButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    handleStatusUpdate(user, Status.BANNED);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    User user = getTableView().getItems().get(getIndex());
+                    setGraphic(user.getRole() == Role.ADMIN ? null : banButton);
+                } else {
+                    setGraphic(null);
                 }
             }
         });
     }
+
+    private void handleStatusUpdate(User user, Status newStatus) {
+        if (user.getRole() == Role.ADMIN) {
+            showAlert("Action Denied", "Admins cannot be modified.");
+            return;
+        }
+        user.setStatus(newStatus);
+        userService.update(user);
+        loadUsers();
+    }
+
     private void handleDeleteButtonClick(User user) {
-        System.out.println("Delete user: " + user);
-        UserService userService = new UserService();
         try {
-            userService.delete(user); // Assuming you have a delete method in UserService
+            userService.delete(user);
             loadUsers();
         } catch (Exception e) {
-            e.printStackTrace();
             showAlert("Error", "An error occurred while deleting the user: " + e.getMessage());
         }
     }
+
     private void showAlert(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     @FXML
     void NavigateToAddAdmin(ActionEvent event) {
         try {
-            // Load the home.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddAdmin.fxml"));
             Parent root = loader.load();
-
-            // Get the current stage (window)
             Stage stage = (Stage) AddAdmin.getScene().getWindow();
-
-            // Set the new scene with the home.fxml content
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load the home screen.");
+            showAlert("Navigation Error", "Unable to load the admin screen.");
         }
     }
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
 }

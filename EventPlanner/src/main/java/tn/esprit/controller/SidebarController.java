@@ -161,6 +161,7 @@ public class SidebarController {
         }
     }
 
+
     @FXML
     void NavigateToEditProfile(ActionEvent event) {
         try {
@@ -310,7 +311,7 @@ public class SidebarController {
     }@FXML
     public void navigateToParticipant(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherParticipant.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/showParticipant.fxml"));
             Parent root = loader.load();
 
             // Get the current stage from the button (if applicable)

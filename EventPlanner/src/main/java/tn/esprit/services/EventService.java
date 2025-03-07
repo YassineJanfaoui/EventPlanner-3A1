@@ -1,6 +1,7 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Event;
+import tn.esprit.entities.Team;
 import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
@@ -256,5 +257,55 @@ public class EventService implements IService<Event> {
 
         return events;
     }
+    public List<Event> getAllEvents() {
+        List<Event> events = new ArrayList<>();
+        String query = "SELECT * FROM event";
 
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Event event = new Event(
+                        resultSet.getInt("eventId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("startDate"),
+                        resultSet.getString("endDate"),
+                        resultSet.getInt("maxParticipants"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("fee"),
+                        resultSet.getInt("userid"),
+                        resultSet.getString("image")
+                );
+                events.add(event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+    public List<Team> getTeamsByEventId(int eventId) {
+        List<Team> teams = new ArrayList<>();
+        String query = "SELECT * FROM team WHERE eventId = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, eventId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Team team = new Team(
+                        resultSet.getInt("teamid"),
+                        resultSet.getString("TeamName"),
+                        resultSet.getInt("Score"),
+                        resultSet.getInt("Rank"),
+                        resultSet.getInt("eventId")
+                );
+                teams.add(team);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return teams;
+    }
 }

@@ -12,10 +12,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="644.0" prefWidth="486.0" style="-fx-background-color: #7C81AB;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1 " fx:controller="tn.esprit.controller.SignUpController">
+<AnchorPane prefHeight="741.0" prefWidth="486.0" style="-fx-background-color: #7C81AB;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.SignUpController">
    <children>
-      <VBox alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="597.0" prefWidth="443.0" spacing="20" style="-fx-background-color: #F2F2F5; -fx-padding: 30px; -fx-min-width: 400px; -fx-min-height: 500px;">
+      <VBox alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="697.0" prefWidth="443.0" spacing="20" style="-fx-background-color: #F2F2F5; -fx-padding: 30px; -fx-min-width: 400px; -fx-min-height: 500px;">
          <children>
             <Label style="-fx-text-fill: #2A2A72; -fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 0 0 10px 0;" text="Sign Up" />
             <TextField fx:id="UserName" promptText="Username" style="-fx-pref-width: 300px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-color: #B0A295; -fx-border-radius: 5px; -fx-font-size: 14px; -fx-background-color: white;" />
@@ -38,6 +39,7 @@
                   </items>
                </ChoiceBox>
             </HBox>
+            <WebView fx:id="recaptchaWebView" prefHeight="72.0" prefWidth="382.0" />
 
             <Button fx:id="signUpButton" onAction="#Submit" style="-fx-background-color: #7C81AB; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 12px 24px; -fx-background-radius: 5px; -fx-border: none; -fx-cursor: hand;" text="Sign Up" />
          </children>
