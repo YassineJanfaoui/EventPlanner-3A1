@@ -108,5 +108,53 @@ public class CateringServices implements IService<Catering> {
             System.out.println(se.getMessage());
         }
     }
+
+    public List<Catering> filterAndSortCatering(String menuType, String mealSchedule, String sortOrder) throws SQLException {
+        String query = "SELECT * FROM catering WHERE 1=1";
+
+        List<String> conditions = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+
+        if (menuType != null) {
+            conditions.add("menuType = ?");
+            values.add(menuType);
+        }
+        if (mealSchedule != null) {
+            conditions.add("mealSchedule = ?");
+            values.add(mealSchedule);
+        }
+
+        if (!conditions.isEmpty()) {
+            query += " AND " + String.join(" AND ", conditions);
+        }
+
+        if (sortOrder != null) {
+            query += " ORDER BY pricing " + sortOrder;
+        }
+
+        PreparedStatement pst = con.prepareStatement(query);
+
+        for (int i = 0; i < values.size(); i++) {
+            pst.setObject(i + 1, values.get(i));
+        }
+
+        ResultSet rs = pst.executeQuery();
+        List<Catering> cateringList = new ArrayList<>();
+
+        while (rs.next()) {
+            Catering c = new Catering();
+            c.setCateringId(rs.getInt("CateringId"));
+            c.setMenuType(rs.getString("MenuType"));
+            c.setNbrPlates(rs.getInt("NbrPlates"));
+            c.setPricing(rs.getFloat("Pricing"));
+            c.setMealSchedule(rs.getString("MealSchedule"));
+            c.setBeverages(rs.getString("Beverages"));
+            c.setVenueId(rs.getInt("VenueId"));
+            cateringList.add(c);
+        }
+
+        return cateringList;
+    }
+
 }
 

@@ -78,10 +78,10 @@ public class Venue {
         VenueName = venueName;
     }
 
-
     public void setLocation(String location) {
         Location = location;
     }
+
 
     @Override
     public String toString() {

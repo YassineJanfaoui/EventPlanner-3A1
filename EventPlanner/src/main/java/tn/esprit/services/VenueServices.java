@@ -2,15 +2,17 @@ package tn.esprit.services;
 
 import tn.esprit.entities.Venue;
 import tn.esprit.utils.MyDatabase;
-
+import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VenueServices implements IService<Venue> {
-    private Connection con;
+    private final Connection con;
     public VenueServices() throws SQLException {
         con=MyDatabase.getInstance().getCon();
+
     }
 
     @Override
@@ -41,18 +43,26 @@ public class VenueServices implements IService<Venue> {
         pst.setString(4, v.getAvailability());
         pst.setDouble(5, v.getCost());
         pst.setString(6, v.getParking());
+
         pst.executeUpdate();
         System.out.println("Venue added");
+        try {
+            GoogleCalendarService.createEvent(v.getVenueName(), v.getLocation(), v.getAvailability());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("⚠ Could not sync reservation to Google Calendar");
+        }
     }
 
     @Override
     public List<Venue> returnList() throws SQLException {
-        String query="SELECT * FROM venue";
-        Statement st=con.createStatement();
-        ResultSet rs=st.executeQuery(query);
-        List<Venue> venueList=new ArrayList<>();
-        while(rs.next()){
-            Venue v=new Venue();
+        String query = "SELECT * FROM venue";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<Venue> venueList = new ArrayList<>();
+
+        while (rs.next()) {
+            Venue v = new Venue();
             v.setVenueId(rs.getInt("VenueId"));
             v.setVenueName(rs.getString("VenueName"));
             v.setLocation(rs.getString("Location"));
@@ -64,6 +74,7 @@ public class VenueServices implements IService<Venue> {
         }
         return venueList;
     }
+
 
     @Override
     public void delete(Venue venue) {
@@ -104,17 +115,58 @@ public class VenueServices implements IService<Venue> {
             System.out.println(se.getMessage());
         }
     }
+    public Venue bestValueVenue() throws SQLException {
+        String query = "SELECT VenueId, VenueName, Location, NbrPlaces, Cost, " +
+                "(Cost / NbrPlaces) AS CostPerSeat FROM venue " +
+                "WHERE NbrPlaces > 0 ORDER BY CostPerSeat ASC, NbrPlaces DESC LIMIT 1";
 
-    public int[] venueIDs() throws SQLException {
-        String query = "SELECT VenueId FROM venue";
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
-        List<Integer> venueIDsList = new ArrayList<>();
 
-        while (rs.next()) {
-            venueIDsList.add(rs.getInt("VenueId"));
+        if (rs.next()) {
+            Venue venue = new Venue();
+            venue.setVenueId(rs.getInt("VenueId"));
+            venue.setVenueName(rs.getString("VenueName"));
+            venue.setLocation(rs.getString("Location"));
+            venue.setNbrPlaces(rs.getInt("NbrPlaces"));
+            venue.setCost(rs.getFloat("Cost"));
+
+            System.out.println("Best Value Venue: " + venue.getVenueName() +
+                    " - Cost Per Seat: " + (venue.getCost() / venue.getNbrPlaces()));
+
+            return venue;
         }
 
-        return venueIDsList.stream().mapToInt(i -> i).toArray();
+        return null; // If no venue is found
     }
+    public Map<String, Integer> getVenueNameToIdMap() throws SQLException {
+        String query = "SELECT VenueId, VenueName FROM venue";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+
+        Map<String, Integer> venueMap = new HashMap<>();
+        while (rs.next()) {
+            venueMap.put(rs.getString("VenueName"), rs.getInt("VenueId"));
+        }
+
+        return venueMap;
+    }
+
+    public void syncAllReservationsToGoogleCalendar() throws SQLException {
+        String query = "SELECT v.VenueName, v.Location, ev.reservationDate FROM eventvenue ev " +
+                "JOIN venue v ON ev.venueId = v.VenueId";
+
+        PreparedStatement pst = con.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            String venueName = rs.getString("VenueName");
+            String location = rs.getString("Location");
+            String reservationDate = rs.getString("reservationDate");
+
+            // ✅ Send each reservation to Google Calendar
+            GoogleCalendarService.createEvent(venueName, location, reservationDate);
+        }
+    }
+
 }

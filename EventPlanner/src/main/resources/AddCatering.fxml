@@ -47,12 +47,14 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <ComboBox fx:id="venueIdComboBox" minWidth="400" prefWidth="400.0" promptText="Venue ID" styleClass="input-field">
+        <ComboBox fx:id="venueNameComboBox" minWidth="400" prefWidth="400.0" promptText="Select Venue" styleClass="input-field">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                 </FXCollections>
             </items>
         </ComboBox>
+
+
 
         <HBox>
             <Button mnemonicParsing="false" onAction="#handleAddCatering" prefHeight="55.0" prefWidth="205.0" styleClass="my-button" text="Add Catering" />

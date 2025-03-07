@@ -15,6 +15,7 @@ import tn.esprit.services.CateringServices;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ShowCateringController {
 
@@ -47,6 +48,15 @@ public class ShowCateringController {
 
     @FXML
     private TableColumn<Catering, Void> colDelete;
+
+    @FXML
+    private ComboBox<String> menuTypeFilter;
+    @FXML
+    private ComboBox<String> mealScheduleFilter;
+    @FXML
+    private ComboBox<String> priceSortOrder;
+    @FXML
+    private Button applyFiltersButton;
 
     @FXML
     void initialize() throws SQLException {
@@ -141,6 +151,40 @@ public class ShowCateringController {
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleApplyFilters() throws SQLException {
+        String menuType = menuTypeFilter.getValue();
+        String mealSchedule = mealScheduleFilter.getValue();
+        String sortOrder = priceSortOrder.getValue();
+
+        if (sortOrder != null && sortOrder.equals("Ascending")) {
+            sortOrder = "ASC";
+        } else if (sortOrder != null && sortOrder.equals("Descending")) {
+            sortOrder = "DESC";
+        } else {
+            sortOrder = null; // No sorting applied
+        }
+
+        if (menuType != null && menuType.equals("All")) {
+            menuType = null; // No filter applied
+        }
+        if (mealSchedule != null && mealSchedule.equals("All")) {
+            mealSchedule = null; // No filter applied
+        }
+
+        CateringServices cateringServices = new CateringServices();
+
+        try {
+            List<Catering> filteredList = cateringServices.filterAndSortCatering(
+                    menuType, mealSchedule, sortOrder
+            );
+
+            cateringTable.setItems(FXCollections.observableArrayList(filteredList));
+        } catch (SQLException e) {
+            System.out.println("Error fetching filtered catering data: " + e.getMessage());
         }
     }
 

@@ -15,6 +15,8 @@ import tn.esprit.services.VenueServices;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UpdateCateringController {
 
@@ -29,7 +31,8 @@ public class UpdateCateringController {
     @FXML
     private ComboBox<String> beveragesComboBox;
     @FXML
-    private ComboBox<Integer> venueIdComboBox;
+    private ComboBox<String> venueNameComboBox; // Store Venue Names instead of IDs
+    private Map<String, Integer> venueMap = new HashMap<>(); // Map Venue Names to IDs
 
     private final CateringServices cateringService = new CateringServices();
     private final VenueServices venueService = new VenueServices();
@@ -57,16 +60,20 @@ public class UpdateCateringController {
         );
         beveragesComboBox.setItems(beverageOptions);
 
-        // Fetch available venue IDs dynamically
+        // Fetch available venue names dynamically
         try {
-            int[] venueIDs = venueService.venueIDs();
-            ObservableList<Integer> venueIdList = FXCollections.observableArrayList();
-            for (int id : venueIDs) {
-                venueIdList.add(id);
+            VenueServices venueService = new VenueServices();
+            Map<String, Integer> venues = venueService.getVenueNameToIdMap(); // Get venue name-ID mapping
+
+            venueMap.putAll(venues); // Store mapping for later use
+            ObservableList<String> venueNames = FXCollections.observableArrayList(venues.keySet());
+
+            venueNameComboBox.setItems(venueNames);
+            if (!venueNames.isEmpty()) {
+                venueNameComboBox.getSelectionModel().selectFirst();
             }
-            venueIdComboBox.setItems(venueIdList);
         } catch (Exception e) {
-            System.out.println("Error fetching venue IDs: " + e.getMessage());
+            System.out.println("Error fetching venue names: " + e.getMessage());
         }
     }
 
@@ -78,7 +85,13 @@ public class UpdateCateringController {
             String beverages = beveragesComboBox.getValue();
             String nbrPlatesText = nbrPlatesField.getText().trim();
             String pricingText = pricingField.getText().trim();
-            Integer venueId = venueIdComboBox.getValue();
+            String venueName = venueNameComboBox.getValue();
+            Integer venueId = venueMap.get(venueName); // Convert Venue Name to Venue ID
+
+            if (venueId == null) {
+                showAlert(Alert.AlertType.ERROR, "Form Error", "Please select a valid venue.");
+                return;
+            }
 
             if (menuType == null || mealSchedule == null || beverages == null || nbrPlatesText.isEmpty() || pricingText.isEmpty() || venueId == null) {
                 showAlert(Alert.AlertType.ERROR, "Form Error", "All fields must be completed.");
@@ -137,7 +150,15 @@ public class UpdateCateringController {
         pricingField.setText(String.valueOf(currentCatering.getPricing()));
         mealScheduleComboBox.setValue(currentCatering.getMealSchedule());
         beveragesComboBox.setValue(currentCatering.getBeverages());
-        venueIdComboBox.setValue(currentCatering.getVenueId());
+        // Get the venue name corresponding to the stored venue ID
+        String venueName = venueMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().equals(currentCatering.getVenueId()))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
+        venueNameComboBox.setValue(venueName);
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
