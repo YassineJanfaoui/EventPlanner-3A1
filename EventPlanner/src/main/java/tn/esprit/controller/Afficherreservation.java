@@ -75,8 +75,11 @@ public class Afficherreservation {
 
     private void configureTableColumns() {
         colEventVenueId.setCellValueFactory(new PropertyValueFactory<>("eventVenueId"));
+        colEventVenueId.setVisible(false);
         colVenueId.setCellValueFactory(new PropertyValueFactory<>("venueId"));
+        colVenueId.setVisible(false);
         colEventId.setCellValueFactory(new PropertyValueFactory<>("eventId"));
+        colEventId.setVisible(false);
         colReservationDate.setCellValueFactory(new PropertyValueFactory<>("reservationDate"));
         colReservationPrice.setCellValueFactory(new PropertyValueFactory<>("reservationPrice"));
     }

@@ -343,7 +343,7 @@ public class AfficherEvents {
 
         try {
             // Creating an instance of HSSFWorkbook class
-            String filename = "D:\\Desktop\\branchSemah\\EventPlanner-3A1\\EventPlanner\\src\\main\\java\\tn\\esprit\\excel\\DonnéeÉvénements.XLS";
+            String filename = "DonnéeÉvénements.XLS";
             HSSFWorkbook workbook = new HSSFWorkbook();
 //invoking creatSheet() method and passing the name of the sheet to be created
             HSSFSheet sheet = workbook.createSheet("Event Details");
@@ -392,7 +392,7 @@ public class AfficherEvents {
             e.printStackTrace();
         }
     }
-    String path = "D:/telechargement/event/event/src/main/java/tn/esprit/media/event.mp3";    Media media = new Media(new File(path).toURI().toString());
+    Media media = new Media(getClass().getResource("/event.mp3").toExternalForm());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     @FXML
